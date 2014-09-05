@@ -1,0 +1,9 @@
+language: perl
+perl:
+  - "5.20"
+  - "5.18"
+
+script: perl test.pl
+
+notifications:
+  email: rupak.karmadhar@gmail.com
