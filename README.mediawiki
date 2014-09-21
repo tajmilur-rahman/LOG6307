@@ -1,18 +1,32 @@
-==Presentation==
+==Paper Review==
+Â * are individual
+Â * should consist of:
+Â Â  - <=5 sentences summarizing the paper *in your words*
+Â Â  - a bullet list of 3 positive and 3 negative points
+Â Â  - a longer explanation/motivation of the 3 positive and negative points
+Â Â  - a score for the paper going from -3 (strong reject) to +3 (strong accept)
+Â * should be submitted via Reviews => My papers => [correct paper number] => add new review (ignore the Subreviewer, Confidential remarks and Attachment fields, and pick a random value for Reviewers confidence)
+Â * should be submitted *before* the start of the class in which the paper will be presented (by a colleague)
+Â * reviewing criteria to consider (feel free to add others):
+Â Â  - novelty of the contribution
+Â Â  - quality of the approach
+Â Â  - correctness of the empirical analysis
+Â Â  - how interesting are the results? are they actionable?
+Â Â  - any related work that was missed?
+Â Â  - potential ideas for future work?
 
-# 15 minutes length
-
-==Review==
-
-# [4-5 line summary]
-# bullet points:
-# more detils
+==Paper Presentation==
+Â * are individual
+Â * should be 15 minutes
+Â * will be followed by a group-wide discussion, so even if you are not the presenter/reviewer, please come prepared to class
+Â * should follow the presentation guidelines that have been posted on Moodle (e.g., the slides should be in English, while the talk can be given in French, if desired)
+Â * should be submitted using the same procedure as for reviews (this can be done after the presentation, on the day of the presentation), except that you should attach your presentation as an Attachment instead of typing in a Review.
+Â The goal of the presentations and papers is to make yourself comfortable with presenting/reviewing/discussing research papers, as well as to learn new techniques or important results in the field. For those reasons, I would recommend to also read the papers presented/reviewed by others, since that will allow you to participate in the discussions (which count for 10% of the marks).
 
 ==For presentation and review we should use EasyChair==
-
 In easychair: MAYBE = reviewing, YES = presenting
 
-==Assignment==
+==Paper Replication Assignment==
 # Two people group
 # Implement existing research methodology in my dataset
 # Proposal
@@ -30,3 +44,29 @@ In easychair: MAYBE = reviewing, YES = presenting
 # Data
 # Methodology
 # Defects
+
+==Meeting Minutes==
+
+===18th September 2014===
+
+===11th September 2014===
+* Number of active switches across releases
+* Code blocks gaurded by flags
+** Is the block a function/sub body inside?
+** LOC of the blocks
+** Nested switches
+* Commits with only switch files ~ Commits with switches and other files
+* People who are toggling or adding the switches
+* Conditional compilations [#ifdef XXXXXX ... ... ... #endif]
+* Relations with Releases
+
+Tool can be used: srcML
+
+1. What is features flags, How are flags being used
+2. How many total flags in google chrome, how many of them are active and how many of them are inactive.
+3. How many commits are made for flags/toggles in google chrome
+4. How much churn are made for toggling/blocking codes
+5. Why flags enabled or desabled most of the time
+6. How much time between a switch being active and be removed
+
+Readings: The card sorting
