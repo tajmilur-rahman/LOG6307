@@ -1,0 +1,18 @@
+apply plugin: 'java'
+apply plugin: 'application'
+
+mainClassName = "com.querel.log6307.linking.Main"
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile group: 'org.postgresql', name: 'postgresql', version: '9.3-1102-jdbc41'
+    compile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.7'
+    compile group: 'org.slf4j', name: 'slf4j-simple', version: '1.7.7'
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.1'
+}
