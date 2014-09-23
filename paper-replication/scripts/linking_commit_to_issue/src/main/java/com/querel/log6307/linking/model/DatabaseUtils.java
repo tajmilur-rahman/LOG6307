@@ -34,15 +34,15 @@ public class DatabaseUtils {
 
     }
 
-    public static List<String> getListOfCommitMetricId(Database database){
+    public static List<Commit> getListOfCommitMetricId(Database database){
 
         try {
             ResultSet resultSet = database.selectListOfCommitMetricIds();
 
             resultSet.first();
-            List<String> commits = new LinkedList<String>();
+            List<Commit> commits = new LinkedList<Commit>();
             do{
-                commits.add(resultSet.getString("commit"));
+                commits.add(new Commit(resultSet.getString("commit"), resultSet.getString("subject")));
             } while (resultSet.next());
 
             return commits;

@@ -58,7 +58,7 @@ public class Database {
 
     public ResultSet selectListOfCommitMetricIds() throws SQLException {
 
-        CallableStatement statement = this.connection.prepareCall("SELECT COMMIT FROM LOG6307_COMMIT;",ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+        CallableStatement statement = this.connection.prepareCall("SELECT LOG6307_COMMIT.COMMIT, GIT_COMMIT.SUBJECT  FROM LOG6307_COMMIT, GIT_COMMIT WHERE LOG6307_COMMIT.COMMIT = GIT_COMMIT.COMMIT;",ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
         return statement.executeQuery();
     }
 

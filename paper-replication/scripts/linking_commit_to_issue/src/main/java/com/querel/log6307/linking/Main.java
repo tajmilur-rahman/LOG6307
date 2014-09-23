@@ -1,5 +1,6 @@
 package com.querel.log6307.linking;
 
+import com.querel.log6307.linking.model.Commit;
 import com.querel.log6307.linking.model.Database;
 import com.querel.log6307.linking.model.DatabaseUtils;
 import org.slf4j.Logger;
@@ -10,6 +11,7 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class Main {
 
@@ -56,15 +58,17 @@ public class Main {
         logging.info("Calculating values and linking commit to issue if present");
 
         HashMap<Integer, String> issues = DatabaseUtils.getMapOfIssues(database);
-        List<String> commitMetricIds = DatabaseUtils.getListOfCommitMetricId(database);
+        List<Commit> metricCommits = DatabaseUtils.getListOfCommitMetricId(database);
 
         int numberOfIssues = issues.size();
-        int numberOfCommits = commitMetricIds.size();
+        int numberOfCommits = metricCommits.size();
         logging.info(String.valueOf(numberOfIssues));
 
         for (int i = 0; i < numberOfCommits; i++){
 
-            String commitId = commitMetricIds.get(i);
+            Commit commit = metricCommits.get(i);
+
+            String commitId = commit.getCommitId();
             logging.info("Processing commit "+(i+1)+" of "+numberOfCommits+" - "+commitId);
             try {
                 DatabaseUtils.populateCommitMetricData(database, commitId);
