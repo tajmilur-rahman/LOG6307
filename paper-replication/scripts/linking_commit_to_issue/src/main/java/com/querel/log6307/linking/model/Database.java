@@ -46,21 +46,31 @@ public class Database {
     public ResultSet selectDistinctCommits() throws SQLException {
 
         // So right now we are getting all of the commit ids, but we should probably do this in batches to make it more efficient
-        CallableStatement statement = connection.prepareCall("SELECT DISTINCT(COMMIT) FROM GIT_COMMIT;",ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-        ResultSet resultSet = statement.executeQuery();
-
-        return resultSet;
+        CallableStatement statement = connection.prepareCall("SELECT DISTINCT(COMMIT) FROM GIT_COMMIT;", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+        return statement.executeQuery();
     }
 
-    public void createLinkingTable(List commits) throws SQLException {
+    public ResultSet selectAllIssues() throws SQLException {
+
+        CallableStatement statement = this.connection.prepareCall("SELECT ID, TYPE FROM LOG6307_ISSUES;",ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+        return statement.executeQuery();
+    }
+
+    public ResultSet selectListOfCommitMetricIds() throws SQLException {
+
+        CallableStatement statement = this.connection.prepareCall("SELECT COMMIT FROM LOG6307_COMMIT;",ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+        return statement.executeQuery();
+    }
+
+    public void createCommitMetricTable(List commits) throws SQLException {
 
         int listSize = commits.size();
         int index = 0;
 
         Statement statement = this.connection.createStatement();
 
+        for (int i = index; i < 20; i++) {
         //for (int i = index; i < listSize; i++) {
-        for (int i = index; i < listSize; i++) {
             String query = "INSERT INTO LOG6307_COMMIT(commit) values ('"+commits.get(i)+"')";
             statement.addBatch(query);
 
@@ -68,6 +78,20 @@ public class Database {
         statement.executeBatch();
         statement.close();
 
+    }
+
+    public void updateCommitMetric(CommitMetric commitMetric) throws SQLException {
+
+        CallableStatement statement = this.connection.prepareCall("UPDATE LOG6307_COMMIT SET "+
+                commitMetric.generateQueryValues()+" WHERE COMMIT = '"+commitMetric.getCommitId()+"'",ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+        statement.execute();
+
+
+    }
+
+    public ResultSet getCommitRevisions(String commitId) throws SQLException {
+        PreparedStatement statement = this.connection.prepareStatement("SELECT * FROM GIT_REVISION WHERE COMMIT = '"+commitId+"';",ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+        return statement.executeQuery();
     }
 
 }

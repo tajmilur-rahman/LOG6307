@@ -7,6 +7,8 @@ import org.slf4j.LoggerFactory;
 
 import java.sql.BatchUpdateException;
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 
 public class Main {
@@ -36,17 +38,41 @@ public class Main {
         logging.info("Successfully connected to database. Starting linking process");
 
         // Attempt to get list of the commits
-        List commits = DatabaseUtils.getListOfCommits(database);
+        List<String> commits = DatabaseUtils.getListOfCommits(database);
         logging.info(commits.size() + " unique commits were identified");
 
-        logging.info("Populating linking table with commits present");
+        logging.info("Initial populating linking table with commits present started");
 
         try {
-            database.createLinkingTable(commits);
+            database.createCommitMetricTable(commits);
         } catch (BatchUpdateException e){
             logging.error(e.getNextException().getMessage());
         } catch (SQLException e) {
             e.printStackTrace();
+        }
+
+        logging.info("Initial populating linking table with commits present completed");
+
+        logging.info("Calculating values and linking commit to issue if present");
+
+        HashMap<Integer, String> issues = DatabaseUtils.getMapOfIssues(database);
+        List<String> commitMetricIds = DatabaseUtils.getListOfCommitMetricId(database);
+
+        int numberOfIssues = issues.size();
+        int numberOfCommits = commitMetricIds.size();
+        logging.info(String.valueOf(numberOfIssues));
+
+        for (int i = 0; i < numberOfCommits; i++){
+
+            String commitId = commitMetricIds.get(i);
+            logging.info("Processing commit "+(i+1)+" of "+numberOfCommits+" - "+commitId);
+            try {
+                DatabaseUtils.populateCommitMetricData(database, commitId);
+            } catch (SQLException e) {
+                e.printStackTrace();
+                break;
+            }
+
         }
 
         //logging.info("Extracting commits which ")
