@@ -108,22 +108,26 @@ public class DatabaseUtils {
     private static List<Revision> getListOfRevisions(Database database, String commitId) throws SQLException {
 
         ResultSet resultSet = database.getCommitRevisions(commitId);
-        resultSet.first();
 
         List<Revision> revisions = new LinkedList<Revision>();
 
-        do {
-            int linesAdded = resultSet.getInt("add");
-            int linesRemove = resultSet.getInt("remove");
-            String path = resultSet.getString("path");
-            String old_path = resultSet.getString("old_path");
-            String new_path = resultSet.getString("new_path");
-            String canonical = resultSet.getString("canonical");
+        if (resultSet.first()) {
 
-            revisions.add(new Revision(commitId, linesAdded, linesRemove, path, old_path, new_path, canonical));
 
-        } while (resultSet.next());
 
+            do {
+                int linesAdded = resultSet.getInt("add");
+                int linesRemove = resultSet.getInt("remove");
+                String path = resultSet.getString("path");
+                String old_path = resultSet.getString("old_path");
+                String new_path = resultSet.getString("new_path");
+                String canonical = resultSet.getString("canonical");
+
+                revisions.add(new Revision(commitId, linesAdded, linesRemove, path, old_path, new_path, canonical));
+
+            } while (resultSet.next());
+
+        }
         return revisions;
     }
 

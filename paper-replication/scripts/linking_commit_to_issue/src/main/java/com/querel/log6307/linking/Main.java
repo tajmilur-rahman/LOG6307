@@ -12,6 +12,8 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Main {
 
@@ -43,7 +45,7 @@ public class Main {
         List<String> commits = DatabaseUtils.getListOfCommits(database);
         logging.info(commits.size() + " unique commits were identified");
 
-        logging.info("Initial populating linking table with commits present started");
+        logging.info("Initial populating commit metric table with commits present started");
 
         try {
             database.createCommitMetricTable(commits);
@@ -53,7 +55,7 @@ public class Main {
             e.printStackTrace();
         }
 
-        logging.info("Initial populating linking table with commits present completed");
+        logging.info("Initial populating commit metric table with commits present completed");
 
         logging.info("Calculating values and linking commit to issue if present");
 
@@ -77,9 +79,24 @@ public class Main {
                 break;
             }
 
-        }
+            String commit_summary = commit.getSummary();
 
-        //logging.info("Extracting commits which ")
+            Pattern issueNumberPattern = Pattern.compile("#\\d+");
+            Matcher matcher = issueNumberPattern.matcher(commit_summary);
+            if (matcher.find()){
+                int id = Integer.parseInt(commit_summary.substring(matcher.start() + 1, matcher.end()));
+                logging.info("match found : #"+id);
+
+                try {
+                    database.createCommitIssueLink(commitId, id);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            //logging.info("Linked commit "+(i+1)+" of "+numberOfCommits+" to issue #"+1);
+
+        }
 
     }
 }

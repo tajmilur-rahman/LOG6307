@@ -69,8 +69,9 @@ public class Database {
 
         Statement statement = this.connection.createStatement();
 
-        for (int i = index; i < 20; i++) {
-        //for (int i = index; i < listSize; i++) {
+        //for (int i = index; i < 60; i++) {
+
+        for (int i = index; i < listSize; i++) {
             String query = "INSERT INTO LOG6307_COMMIT(commit) values ('"+commits.get(i)+"')";
             statement.addBatch(query);
 
@@ -92,6 +93,11 @@ public class Database {
     public ResultSet getCommitRevisions(String commitId) throws SQLException {
         PreparedStatement statement = this.connection.prepareStatement("SELECT * FROM GIT_REVISION WHERE COMMIT = '"+commitId+"';",ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
         return statement.executeQuery();
+    }
+
+    public void createCommitIssueLink(String commitId, int issueId) throws SQLException {
+        PreparedStatement statement = this.connection.prepareStatement("INSERT INTO LOG6307_COMMIT_ISSUE_LINK(commit_id, issue_id) values ('"+commitId+"', "+issueId+")");
+        statement.execute();
     }
 
 }
