@@ -1,6 +1,6 @@
 import re
 import psycopg2
-from subprocess import call, check_output
+from subprocess import check_output
 
 __author__ = 'lquerel'
 
@@ -32,12 +32,6 @@ class Postgres:
         # self.db.commit()
 
 
-"""
-git log -p -1 c08c4fff40bae319cb8c4793ad8b11f7865a7dff
-
-"""
-
-
 def obtain_git_diff(git_path, commit_id):
     """
     Get the git diff
@@ -56,7 +50,7 @@ def obtain_git_blame(git_path, parent_commit_id, file_path, start, end):
     # (\w\d)+\s+(\d+)\)(.*)
 
 
-def process_revision(revision):
+def process_revision(revision, parent_commit_id):
     # revision as format ('file_path', '')('tests/migrations/test_state.py', 'index afd2f8b..ab65630 100644\n--- a/tests/m
 
     file_path = revision[0][0]
@@ -98,7 +92,7 @@ def process_revision(revision):
 
     return commit_origin_of_removed_lines
 
-def process_commit():
+def process_commit(commit_id, parent_commit_id):
     global commit_diff, revisions, commit_origin_of_removed_lines, revision, parsed_revision, commit_id_and_number_of_lines_affected, prev_commit_id
     print "Parent: %s, Commit: %s" % (parent_commit_id, commit_id)
     commit_diff = obtain_git_diff(git_path, commit_id)
@@ -114,23 +108,26 @@ def process_commit():
             # It seems that our revision is not actually a revision. We will skip it then
             continue
 
-        commit_id_and_number_of_lines_affected = process_revision(parsed_revision)
+        commit_id_and_number_of_lines_affected = process_revision(parsed_revision, parent_commit_id)
 
         for prev_commit_id in commit_id_and_number_of_lines_affected.keys():
             if prev_commit_id in commit_origin_of_removed_lines:
                 commit_origin_of_removed_lines[prev_commit_id] += commit_id_and_number_of_lines_affected[prev_commit_id]
             else:
                 commit_origin_of_removed_lines[prev_commit_id] = commit_id_and_number_of_lines_affected[prev_commit_id]
-    print "Commmits which had lines which were removed by current commit: %s" % commit_origin_of_removed_lines
+    print "Commits which had lines which were removed by current commit: %s" % commit_origin_of_removed_lines
 
 
-postgres = Postgres()
-commits = postgres.get_commits()
+def run_script():
+
+    postgres = Postgres()
+    commits = postgres.get_commits()
+
+    for index in range(1):
+        commit_id = commits[index][0] # Get id fo the affected commit
+        parent_commit_id = commits[index][1] # Get the id of the parent of the affected commit
+        process_commit(commit_id, parent_commit_id)
 
 
-# Row format: ('commit', 'tree', 'author', author_dt, auth_id, 'committer', 'committer_dt, com_id, 'subject', num_child, num_parent, 'log')
-commit_id = commits[0][0]  # Get the commit id
-parent_commit_id = commits[0][1] # Id of parent commit
-
-for index in range(1):
-    process_commit()
+if __name__ == '__main__':
+    run_script()
