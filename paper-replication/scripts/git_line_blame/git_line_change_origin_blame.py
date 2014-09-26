@@ -57,15 +57,31 @@ def process_revision(revision, parent_commit_id):
     file_diff = revision[0][2]
 
     ## diff_metrics eg. [('196', '7', '7')] [('a', 'b', 'c')]
-    diff_metrics = re.findall("@@\s*-(\d+),(\d+)\s*\+\d+,(\d+)", file_diff)[0]
-    change_line_start = int(diff_metrics[0])+diff_history_size
-    change_line_end = int(diff_metrics[0])+int(diff_metrics[1])-diff_history_size-1
+    #print "%s %s" % (type(file_diff), file_diff)
+
+    multi = re.findall("@@\s*-(\d+),(\d+)\s*\+\d+,(\d+)", file_diff)
+
+    if len(multi) > 0:
+        diff_metrics = multi[0]
+        change_line_start = int(diff_metrics[0])+diff_history_size
+        change_line_end = int(diff_metrics[0])+int(diff_metrics[1])-diff_history_size-1
+    else:
+        diff_metrics = re.findall("@@\s*-(\d+),{0,1}\d*\s*\+(\d+)", file_diff)
+        if len(diff_metrics) > 0:
+            change_line_start = int(diff_metrics[0][0])+diff_history_size
+            change_line_end = int(diff_metrics[0][1])+1
+        else:
+            print "Possible failure: parent commitid %s revision diff %s" % (parent_commit_id, file_diff)
+            return {}
+
+
 
     lines_removed = re.findall("\n-(.*)", file_diff)
     number_of_lines_removed = len(lines_removed)
 
 
     print "\nfile: %s \nstart line: %s\nend line: %s\nremoved: %s" % (file_path, change_line_start, change_line_end, lines_removed)
+    print "file: %s - lines removed: %s" % (file_path, len(lines_removed))
     git_blame = obtain_git_blame(git_path, parent_commit_id, file_path, change_line_start, change_line_end).split("\n")
 
 
@@ -74,10 +90,10 @@ def process_revision(revision, parent_commit_id):
 
     if number_of_lines_removed > 0:
         for i in range(len(git_blame)):
-            print "loop"+str(i)
+            #print "loop"+str(i)
             if index_of_lines_removed >= number_of_lines_removed:
                 # all lines have been found
-                print "No more lines to match to revision"
+                #print "No more lines to match to revision"
                 break
 
             if lines_removed[index_of_lines_removed] in git_blame[i]:
@@ -92,13 +108,14 @@ def process_revision(revision, parent_commit_id):
 
     return commit_origin_of_removed_lines
 
+
 def process_commit(commit_id, parent_commit_id):
     global commit_diff, revisions, commit_origin_of_removed_lines, revision, parsed_revision, commit_id_and_number_of_lines_affected, prev_commit_id
-    print "Parent: %s, Commit: %s" % (parent_commit_id, commit_id)
+
     commit_diff = obtain_git_diff(git_path, commit_id)
     # Split the commit diff into it's different files which were modified
     revisions = re.split("diff --git", commit_diff)[1:]
-    print revisions
+    #print revisions
     commit_origin_of_removed_lines = {}
     # With the list of all file revisions from the commit diff we need to isolate it to each file revision
     for revision in revisions:
@@ -115,7 +132,7 @@ def process_commit(commit_id, parent_commit_id):
                 commit_origin_of_removed_lines[prev_commit_id] += commit_id_and_number_of_lines_affected[prev_commit_id]
             else:
                 commit_origin_of_removed_lines[prev_commit_id] = commit_id_and_number_of_lines_affected[prev_commit_id]
-    print "Commits which had lines which were removed by current commit: %s" % commit_origin_of_removed_lines
+    print "Commits which had lines which were removed by current commit: %s \n" % commit_origin_of_removed_lines
 
 
 def run_script():
@@ -123,9 +140,22 @@ def run_script():
     postgres = Postgres()
     commits = postgres.get_commits()
 
-    for index in range(1):
-        commit_id = commits[index][0] # Get id fo the affected commit
-        parent_commit_id = commits[index][1] # Get the id of the parent of the affected commit
+    manual_run = None
+    #manual_run = 46
+
+    if not manual_run:
+        for index in range(50):
+            #index = 2 # TODO remove
+            commit_id = commits[index][0] # Get id fo the affected commit
+            parent_commit_id = commits[index][1] # Get the id of the parent of the affected commit
+            print "Parent: %s, Commit: %s" % (parent_commit_id, commit_id)
+    
+            process_commit(commit_id, parent_commit_id)
+    else: 
+        commit_id = commits[manual_run][0] # Get id fo the affected commit
+        parent_commit_id = commits[manual_run][1] # Get the id of the parent of the affected commit
+        print "Parent: %s, Commit: %s" % (parent_commit_id, commit_id)
+    
         process_commit(commit_id, parent_commit_id)
 
 
