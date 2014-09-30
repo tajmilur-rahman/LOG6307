@@ -42,7 +42,7 @@ public class DatabaseUtils {
             resultSet.first();
             List<Commit> commits = new LinkedList<Commit>();
             do{
-                commits.add(new Commit(resultSet.getString("commit"), resultSet.getString("subject")));
+                commits.add(new Commit(resultSet.getString("commit"), resultSet.getString("subject"), resultSet.getString("log")));
             } while (resultSet.next());
 
             return commits;

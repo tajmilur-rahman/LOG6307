@@ -12,5 +12,6 @@ public class Commit {
 
     private String commitId;
     private String summary;
+    private String log;
 
 }

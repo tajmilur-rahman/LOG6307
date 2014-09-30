@@ -78,25 +78,27 @@ public class Main {
                 e.printStackTrace();
                 break;
             }
-
-            String commit_summary = commit.getSummary();
-
-            Pattern issueNumberPattern = Pattern.compile("#\\d+");
-            Matcher matcher = issueNumberPattern.matcher(commit_summary);
-            if (matcher.find()){
-                int id = Integer.parseInt(commit_summary.substring(matcher.start() + 1, matcher.end()));
-                logging.info("match found : #"+id);
-
-                try {
-                    database.createCommitIssueLink(commitId, id);
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
+            extractCommitIssueLink(database, commitId, commit.getSummary());
+            extractCommitIssueLink(database, commitId, commit.getLog());
 
             //logging.info("Linked commit "+(i+1)+" of "+numberOfCommits+" to issue #"+1);
 
         }
 
+    }
+
+    private static void extractCommitIssueLink(Database database, String commitId, String commit_summary) {
+        Pattern issueNumberPattern = Pattern.compile("#\\d+");
+        Matcher matcher = issueNumberPattern.matcher(commit_summary);
+        if (matcher.find()){
+            int id = Integer.parseInt(commit_summary.substring(matcher.start() + 1, matcher.end()));
+            logging.info("match found : #"+id);
+
+            try {
+                database.createCommitIssueLink(commitId, id);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }
