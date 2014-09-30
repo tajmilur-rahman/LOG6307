@@ -28,4 +28,5 @@ if cur.rowcount > 0 :
 			print str(nuc)+"\n"
 			cur.execute("update log6307_commit set nuc = "+str(nuc)+" where commit = '"+commit+"'")
 conn.commit()
+
 conn.close()
