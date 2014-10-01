@@ -19,10 +19,11 @@ if cur.rowcount > 0 :
 			_files = cur.fetchall()
 			l = []
 			for _file in _files :
-				cur.execute("select c.commit from git_commit c, git_revision r where canonical='"+_file[0]+"' and c.author_dt < '"+str(author_date)+"' order by c.author_dt desc")
+				cur.execute("select c.commit from git_commit c, git_revision r where c.commit=r.commit and canonical='"+_file[0]+"' and c.author_dt < '"+str(author_date)+"' order by c.author_dt desc")
 				if cur.rowcount > 0 :
 					_prevChanges = cur.fetchall()
 					l.append(_prevChanges[0][0])
+			print "third loop done"
 			if len(l) > 0 : l = set(l)
 			nuc = len(l)
 			print str(nuc)+"\n"
