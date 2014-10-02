@@ -3,7 +3,7 @@ import psycopg2
 import datetime;
 from datetime import date;
 
-conn = psycopg2.connect(database="assignment", user="rupak", password="karmadharRL-32", host="127.0.0.1", port="5432")
+conn = psycopg2.connect(database="assignment", user="rupak", password="rupak", host="127.0.0.1", port="5432")
 print "Opened database successfully"
 
 _currYear = date.today().year
@@ -19,14 +19,21 @@ if cur.rowcount > 0 :
 		author = row[1].replace("'", "")
 		author_date = row[2]
 		print commit+" - "+str(author)+" - "+str(author_date)+"\n"
-		# Calculate recent experience for author
-		cur.execute("select sum(add+remove) as churn from git_commit c, git_revision r where c.commit=r.commit and c.author_dt < '"+str(author_date)+"' and c.author='"+str(author)+"' group by c.author")
-		expRows = cur.fetchall()
+		cur.execute("select count(*) as exp, extract(year from c.author_dt) as year from git_commit c, git_revision r where c.commit=r.commit and c.author_dt < '"+str(author_date)+"' and c.author='"+str(author)+"' group by c.author, extract(year from c.author_dt) order by year desc")
+		rExpRows = cur.fetchall()
+		i = 1
+		rexp = 0
+
+		print "+-----------------------------------------------------+\n"
 		for rExpRow in rExpRows :
-			rExp = rExpRow[0]
-			
-			#print "REXP: "+str(rexp)+"\n"
-			#cur.execute("update log6307_commit set rexp = "+str(rexp)+" where commit = '"+commit+"'")
+			exp = rExpRow[0]
+			year = int(rExpRow[1])
+			print "| "+str(author)+" - "+str(int(year))+" - "+str(exp)+" |\n"
+			rexp += (exp/i)
+			i+=1
+		print "+-----------------------------------------------------+\n"
+		print "REXP: "+str(rexp)+"\n"
+		cur.execute("update log6307_commit set rexp = "+str(rexp)+" where commit = '"+commit+"'")
 
 conn.commit()
 conn.close()

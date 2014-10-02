@@ -3,7 +3,7 @@ import psycopg2
 import datetime;
 from datetime import date;
 
-conn = psycopg2.connect(database="assignment", user="rupak", password="karmadharRL-32", host="127.0.0.1", port="5432")
+conn = psycopg2.connect(database="assignment", user="rupak", password="rupak", host="127.0.0.1", port="5432")
 print "Opened database successfully"
 
 cur = conn.cursor()
@@ -18,7 +18,7 @@ if cur.rowcount > 0 :
 		author_date = row[2]
 		print commit+" - "+str(author)+" - "+str(author_date)+"\n"
 		# Calculate experience for author
-		cur.execute("select sum(add+remove) as churn from git_commit c, git_revision r where c.commit=r.commit and c.author_dt < '"+str(author_date)+"' and c.author='"+str(author)+"' group by c.author")
+		cur.execute("select count(distinct c.commit) as exp from git_commit c, git_revision r where c.commit=r.commit and c.author_dt < '"+str(author_date)+"' and c.author='"+str(author)+"' group by c.author")
 		expRows = cur.fetchall()
 		for expRow in expRows :
 			exp = expRow[0]
