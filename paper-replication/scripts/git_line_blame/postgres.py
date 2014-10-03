@@ -1,0 +1,104 @@
+import logging
+import psycopg2
+
+__author__ = 'lquerel'
+
+
+
+class Postgres:
+    def __init__(self):
+
+        self.logger = logging.getLogger("Postgres")
+
+        host = "localhost"
+        database_name = "assignment"
+        username = "lquerel"
+        password = "password"
+
+        try:
+            self.db = psycopg2.connect(
+                "dbname='%s' user='%s' host='%s' password='%s'" % (database_name, username, host, password))
+        except Exception as e:
+            print "Failed to connect to database: %s" % e.message
+
+    def get_commits(self):
+        cursor = self.db.cursor()
+        logging.getLogger("Postgres")
+        self.logger.info("Obtaining list of commits")
+        cursor.execute("""SELECT GIT_COMMIT.COMMIT, GIT_DAG.PARENT FROM GIT_COMMIT, GIT_DAG WHERE GIT_COMMIT.COMMIT = GIT_DAG.CHILD""")
+        self.logger.info("Finished obtaining list of commits")
+        commits = cursor.fetchall()
+        return commits
+        # self.db.commit()
+
+    def create_commit_link(self, originating_commit, replaced_by_commit, line_count):
+        cursor = self.db.cursor()
+        cursor.execute("""INSERT INTO GIT_COMMIT_BLAME (ORIGIN, REPLACED_BY, LINE_COUNT) VALUES ('%s','%s',%s)""" %(originating_commit, replaced_by_commit, line_count))
+        self.db.commit()
+
+    def get_revisions_for_commit(self, commit_id):
+        cursor = self.db.cursor()
+        cursor.execute("""SELECT ADD, REMOVE FROM GIT_REVISION WHERE COMMIT = '%s'""" % commit_id)
+        return cursor.fetchall()
+
+    def add_entropy_and_lines_added_removed(self, commits):
+        cursor = self.db.cursor()
+        for commit_id in commits:
+            commit = commits[commit_id]
+            query = """UPDATE LOG6307_COMMIT SET LA = %s, LD = %s, ENTROPY = %s WHERE COMMIT = '%s'""" % (str(commit["added"]), str(commit["removed"]), str(commit["entropy"]), commit_id)
+
+            cursor.execute(query)
+
+        self.db.commit()
+
+    def find_other_fix_commits(self):
+        cursor = self.db.cursor()
+        cursor.execute("""
+        UPDATE LOG6307_COMMIT COMMIT SET FIX = TRUE FROM GIT_COMMIT GC
+        WHERE GC.COMMIT = COMMIT.COMMIT AND(
+        LOWER(GC.SUBJECT) like '%fix%' OR
+        LOWER(GC.SUBJECT) like '%bug%' OR
+        LOWER(GC.SUBJECT) like '%defect%' OR
+        LOWER(GC.SUBJECT) like '%patch%' OR
+
+        LOWER(GC.LOG) like '%fix%' OR
+        LOWER(GC.LOG) like '%bug%' OR
+        LOWER(GC.LOG) like '%defect%' OR
+        LOWER(GC.LOG) like '%patch%')
+        AND COMMIT.COMMIT NOT IN (SELECT COMMIT_ID FROM LOG6307_COMMIT_ISSUE_LINK)
+        """)
+        cursor.execute("""
+        UPDATE LOG6307_COMMIT COMMITS SET FIX = TRUE FROM GIT_COMMIT AS GC, LOG6307_COMMIT_ISSUE_LINK AS LINK, LOG6307_ISSUES AS ISSUE
+
+        WHERE COMMITS.COMMIT = GC.COMMIT AND
+        (GC.COMMIT = LINK.COMMIT_ID AND LINK.ISSUE_ID = ISSUE.ID AND LOWER(ISSUE.TYPE) IN ('', 'uncategorized', NULL))
+
+        AND (
+        LOWER(GC.SUBJECT) like '%fix%' OR
+        LOWER(GC.SUBJECT) like '%bug%' OR
+        LOWER(GC.SUBJECT) like '%defect%' OR
+        LOWER(GC.SUBJECT) like '%patch%' OR
+
+        LOWER(GC.LOG) like '%fix%' OR
+        LOWER(GC.LOG) like '%bug%' OR
+        LOWER(GC.LOG) like '%defect%' OR
+        LOWER(GC.LOG) like '%patch%');
+        """)
+        self.db.commit()
+
+    def record_commit_issue_link_fix(self):
+        cursor = self.db.cursor()
+        cursor.execute("""
+        UPDATE LOG6307_COMMIT COMMITS SET FIX = TRUE FROM LOG6307_COMMIT_ISSUE_LINK AS LINK, LOG6307_ISSUES AS ISSUE
+        WHERE LOWER(ISSUE.TYPE) IN ('bug', 'defect', 'bug / defect', 'defaut')
+        AND ISSUE.ID = LINK.ISSUE_ID
+        AND LINK.COMMIT_ID = COMMITS.COMMIT """)
+        self.db.commit()
+
+
+
+
+
+
+
+
