@@ -31,6 +31,11 @@ class Postgres:
         return commits
         # self.db.commit()
 
+    def get_fix_commits(self):
+        cursor = self.db.cursor()
+        cursor.execute("""SELECT COMMIT FROM LOG6307_COMMIT WHERE FIX = TRUE""")
+        return cursor.fetchall()
+
     def create_commit_link(self, originating_commit, replaced_by_commit, line_count):
         cursor = self.db.cursor()
         cursor.execute("""INSERT INTO GIT_COMMIT_BLAME (ORIGIN, REPLACED_BY, LINE_COUNT) VALUES ('%s','%s',%s)""" %(originating_commit, replaced_by_commit, line_count))
@@ -95,10 +100,29 @@ class Postgres:
         AND LINK.COMMIT_ID = COMMITS.COMMIT """)
         self.db.commit()
 
+    def get_issue_reported_time_for_commit(self, commit_id):
+        cursor = self.db.cursor()
+        query = """SELECT TIME FROM LOG6307_ISSUES ISSUES, LOG6307_COMMIT_ISSUE_LINK WHERE COMMIT_ID = '%s' AND ISSUE_ID = ISSUES.ID""" % commit_id
+        #print query
+        cursor.execute(query)
+        return cursor.fetchall()
 
+    def get_possible_bug_commits(self, commit_id, time):
 
+        query = """SELECT ORIGIN FROM GIT_COMMIT_BLAME WHERE REPLACED_BY = '%s'""" % commit_id
+        if not time and len(time) > 0:
+            query = """SELECT ORIGIN FROM GIT_COMMIT_BLAME BLAME, GIT_COMMIT COMMIT WHERE BLAME.REPLACED_BY = '%s' AND COMMIT.AUTHOR_DT <= '%s'""" % (commit_id, time[0])
+        cursor = self.db.cursor()
+        cursor.execute(query)
+        return cursor.fetchall()
 
+    def tag_bug_commits(self, commits):
 
+        cursor = self.db.cursor()
+        count =1
+        for commit in commits:
+            print count
+            count += 1
+            cursor.execute("""UPDATE LOG6307_COMMIT COMMIT SET BUG = TRUE WHERE COMMIT.COMMIT = '%s'""" % commit)
 
-
-
+        self.db.commit()

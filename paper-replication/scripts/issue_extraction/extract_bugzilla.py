@@ -50,23 +50,26 @@ class Postgres:
     def insert_bugzilla_issues(self, issues):
         cursor = self.db.cursor()
         print "Generating postgres query"
-        cursor.executemany("""INSERT INTO LOG6307_ISSUES(id, summary, owner, type, status, version, component) VALUES
-                            (%(id)s, %(summary)s, %(owner)s, %(type)s, %(status)s, %(version)s, %(component)s)""", issues)
+        cursor.executemany("""INSERT INTO LOG6307_ISSUES(id, summary, owner, type, status, version, component, time) VALUES
+                            (%(id)s, %(summary)s, %(owner)s, %(type)s, %(status)s, %(version)s, %(component)s, %(time)s)""", issues)
         print "Committing to postgres"
         self.db.commit()
 
 
 
 print os.path.dirname("Running script from: %s" % os.path.abspath(__file__))
-csv_file_name = "bug_tracker.tsv"
+csv_file_name = "bug_tracker_dates.tsv"
 csv_file = open(csv_file_name, 'rb')
 reader = csv.reader(csv_file, delimiter='\t')
 
-mongo = Mongo()
+# mongo = Mongo()
 postgres = Postgres()
 
 first_row = reader.next()
 issues = []
+first_row[0] = 'id'
+
+print first_row
 
 for row in reader:
     row_value = {}
