@@ -119,7 +119,7 @@ class Postgres:
     def tag_bug_commits(self, commits):
 
         cursor = self.db.cursor()
-        count =1
+        count = 1
         for commit in commits:
             print count
             count += 1
