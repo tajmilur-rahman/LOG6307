@@ -1,6 +1,6 @@
 import logging
 import psycopg2
-from settings.settings import DATABASE_NAME, DATABASE_HOST, DATABASE_USERNAME, DATABASE_PASSWORD
+from settings import DATABASE_NAME, DATABASE_HOST, DATABASE_USERNAME, DATABASE_PASSWORD
 
 __author__ = 'lquerel'
 
