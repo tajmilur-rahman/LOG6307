@@ -1,7 +1,8 @@
 #!/usr/bin/python
 import psycopg2
+from settings.settings import *
 
-conn = psycopg2.connect(database="assignment", user="rupak", password="karmadharRL-32", host="127.0.0.1", port="5432")
+conn = psycopg2.connect(database=DATABASE_NAME, user=DATABASE_USERNAME, password=DATABASE_PASSWORD, host=DATABASE_HOST, port="5432")
 print "Opened database successfully"
 
 cur = conn.cursor()

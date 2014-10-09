@@ -1,7 +1,6 @@
 from decimal import Decimal
-from postgres import Postgres
+from settings.postgres import Postgres
 import logging
-from math import log
 
 __author__ = 'lquerel'
 logging.basicConfig(level=logging.INFO)
