@@ -4,8 +4,9 @@ import datetime
 import time
 import calendar
 import sys
+from settings.settings import DATABASE_NAME, DATABASE_HOST, DATABASE_USERNAME, DATABASE_PASSWORD
 
-conn = psycopg2.connect(database="assignment", user="rupak", password="rupak", host="127.0.0.1", port="5432");
+conn = psycopg2.connect(database=DATABASE_NAME, user=DATABASE_USERNAME, password=DATABASE_PASSWORD, host=DATABASE_HOST, port="5432");
 print "Opened database successfully";
 
 cur = conn.cursor();

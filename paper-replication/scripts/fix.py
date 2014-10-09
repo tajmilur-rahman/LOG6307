@@ -1,5 +1,5 @@
 import logging
-from postgres import Postgres
+from settings.postgres import Postgres
 
 __author__ = 'lquerel'
 

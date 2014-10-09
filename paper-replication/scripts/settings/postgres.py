@@ -1,5 +1,6 @@
 import logging
 import psycopg2
+from settings.settings import DATABASE_NAME, DATABASE_HOST, DATABASE_USERNAME, DATABASE_PASSWORD
 
 __author__ = 'lquerel'
 
@@ -10,14 +11,9 @@ class Postgres:
 
         self.logger = logging.getLogger("Postgres")
 
-        host = "localhost"
-        database_name = "assignment"
-        username = "lquerel"
-        password = "password"
-
         try:
             self.db = psycopg2.connect(
-                "dbname='%s' user='%s' host='%s' password='%s'" % (database_name, username, host, password))
+                "dbname='%s' user='%s' host='%s' password='%s'" % (DATABASE_NAME, DATABASE_USERNAME, DATABASE_HOST, DATABASE_PASSWORD))
         except Exception as e:
             print "Failed to connect to database: %s" % e.message
 
