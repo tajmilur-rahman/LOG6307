@@ -122,3 +122,37 @@ class Postgres:
             cursor.execute("""UPDATE LOG6307_COMMIT COMMIT SET BUG = TRUE WHERE COMMIT.COMMIT = '%s'""" % commit)
 
         self.db.commit()
+
+    def get_number_defect_commits(self):
+        cursor = self.db.cursor()
+        cursor.execute("""SELECT COUNT(COMMIT) FROM LOG6307_COMMIT WHERE BUG = TRUE""")
+        return cursor.fetchone()
+
+    def get_start_and_end_of_development(self):
+        cursor = self.db.cursor()
+        cursor.execute("""SELECT MIN(AUTHOR_DT), MAX(AUTHOR_DT) FROM GIT_COMMIT""")
+        return cursor.fetchone()
+
+    def get_avg_number_file_changes(self):
+        cursor = self.db.cursor()
+        cursor.execute("""SELECT COUNT(COMMITS) AS COMMITS, AVG(FILES) AS AVG_CHANGE FROM
+            (SELECT COMMIT AS COMMITS, COUNT(CANONICAL) AS FILES FROM GIT_REVISION GROUP BY COMMIT) AS REVISIONS""")
+        return cursor.fetchone()
+
+    def get_dev_per_file_statistics(self):
+        cursor = self.db.cursor()
+        cursor.execute("""SELECT MAX(AUTHOR_COUNT), AVG(AUTHOR_COUNT) FROM
+            (SELECT CANONICAL, COUNT(DISTINCT(AUTHOR)) AS AUTHOR_COUNT
+            FROM GIT_COMMIT AS COMMIT, GIT_REVISION AS REVISION
+            WHERE COMMIT.COMMIT = REVISION.COMMIT GROUP BY CANONICAL) AS DEV_COUNT""")
+        return cursor.fetchone()
+
+    def get_change_level_loc_statistics(self):
+        cursor = self.db.cursor()
+        cursor.execute("""SELECT COUNT(COMMIT) AS COMMITS, AVG(LINES) AS AVG_LINES FROM
+            (SELECT COMMIT, SUM(ADD) + SUM(REMOVE) AS LINES FROM GIT_REVISION GROUP BY COMMIT) AS LINES_STAT""")
+        return cursor.fetchone()
+
+    def get_avg_file_level_loc_statistics(self):
+        cursor = self.db.cursor()
+        cursor.execute(""" """)
