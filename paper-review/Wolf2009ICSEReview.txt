@@ -1,0 +1,10 @@
+Title of the paper: Predicting Build Failures using Social Network Analysis on Developer Communication
+
+Key Points:
+
+Positive:
+
+1. Results indicate that developer communication plays an important role in the quality of software integrations
+
+Negetive:
+

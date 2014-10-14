@@ -1,4 +1,9 @@
 #!/usr/bin/python
+##
+# author: Md Tajmilur Rahman
+# CESEL, Concordia University
+# rupak.karmadhar@gmail.com
+
 import psycopg2
 from settings.settings import *
 
