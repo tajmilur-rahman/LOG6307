@@ -1,0 +1,30 @@
+{
+'avg_dev_per_file': Decimal('5.6654211427681769'), 
+'end_date': datetime.datetime(2014, 9, 19, 15, 3, 55, tzinfo=psycopg2.tz.FixedOffsetTimezone(offset=-240, name=None)), 
+'defect_commits_perc': 0.28222957227693, 
+'avg_loc_per_change': Decimal('272.3197982914988899'), 
+'files_per_change': Decimal('4.6286551905585206'), 
+'max_dev_per_file': 143L, 
+'total_commits': 26606L, 
+'start_date': datetime.datetime(2005, 7, 12, 21, 25, 57, tzinfo=psycopg2.tz.FixedOffsetTimezone(offset=-240, name=None)),
+'changes_per_day': 7.930253353204173
+}
+
+-------------------------------------------------------------------------------
+Language                     files          blank        comment           code
+-------------------------------------------------------------------------------
+Python                        1234          31689          38369         130580
+Javascript                      25           1265           1072           6080
+JSON                            53             18              0           2217
+CSS                             22            524             92           2063
+HTML                           154            308             16           2061
+XML                             29              2              2            668
+DOS Batch                        2             23              1            173
+make                             1             23              5            116
+Bourne Shell                     5             11             11             78
+SQL                              1              1              1              9
+-------------------------------------------------------------------------------
+SUM:                          1526          33864          39569         144045
+-------------------------------------------------------------------------------
+
+

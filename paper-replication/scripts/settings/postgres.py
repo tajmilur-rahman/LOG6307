@@ -156,3 +156,9 @@ class Postgres:
     def get_avg_file_level_loc_statistics(self):
         cursor = self.db.cursor()
         cursor.execute(""" """)
+
+    def get_all_metrics(self):
+        cursor = self.db.cursor()
+        query = """SELECT * FROM LOG6307_COMMIT"""
+        cursor.execute(query)
+        return cursor.fetchall()
