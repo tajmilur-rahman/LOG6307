@@ -3,8 +3,47 @@ Title of the paper: Predicting Build Failures using Social Network Analysis on D
 Key Points:
 
 Positive:
+**
+
+
+
+
+**
+
+
+
+
+**
+
+
+
+
 
 1. Results indicate that developer communication plays an important role in the quality of software integrations
 
 Negetive:
+**
 
+
+
+
+**
+
+
+
+
+**
+
+
+
+
+
+Score: (scale: -3 to +3)
+
+
+1. Novelty of the contribution:
+2. Quality of the approach:
+3. Correctness of the empirical analysis:
+4. How interesting are the results? are they actionable?
+5. Related work that was missed?
+6. Potential ideas for future work?
