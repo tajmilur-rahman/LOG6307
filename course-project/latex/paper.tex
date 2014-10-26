@@ -18,9 +18,9 @@ Md Tajmilur Rahman\\
 % 2nd. author
 \alignauthor
 Bram Adams\\
-       \affaddr{Concordia University}\\
+       \affaddr{Ecole Polytechnique, University of Montreal}\\
        \affaddr{Montreal, QC H3G 1M8}\\
-       \email{mdt\_rahm@encs.concordia.ca}
+       \email{bram.adams@polymtl.ca}
 }
 \date{1st September 2014}
 \maketitle
@@ -30,24 +30,54 @@ TODO...
 \end{abstract}
 
 \section{Introduction}
-TODO...
+In the modern age of software development, distributed version controlling system has given us the opportunity to develop different features alone in separate branches not bothering other development works. But still a very old and informal practice of releasing software, switching on and off different features is becoming popular and popping up as a high topic among developers' communities now a days.
+
+Current trend of software companies are to release their product as earlier as possible. As we know Google Chrome, Mozilla Firefox already been switched into this trend 3-4 years ago [ref]; Facebook and many other software projects also practicing their release cycle in such a way [ref] where Continuous Integration is an important technique to achieve that [ref]. Continuous Integration and Continuous Deployment let us get the quick feedback regarding our code newly written for new features. This demands a highly faster integration and merging of development works into the main branch.
+
+To fulfil this demand if features are developed in many different branches in a large DVC then process becomes complex and hard to maintain with large number of feature branches. It becomes more frustrating when branching factors like branch activity, branch depth, branch scatter and branch mismatch are not grown up in a proper way [ref]. In this occasion feature flags help release engineers staying on the track because new execution paths in the system are always there but remaining dead just by turning off different flags for different features. The effort of making them alive is also very low, just make a toggle turning the flags "on" from "off".
 
 \subsection{Research Questions}
 
 \renewcommand{\labelenumi}{RQ\theenumi:}
 \begin{enumerate}
-\item What is features flags, how are flags being used? \newline
-\item How many total flags in google chrome, how many of them are active and how many are inactive? \newline
-\item How much effort it requires for feature toggling or setting up feature-flags? \newline
-\item When a feature toggle happens?\newline
-\item How much time between a switch being active and be removed?\newline
+\item What is Feature Flag, how are feature flags are being used?\newline
+Although Feature Flags are important elements in software development to achieve incremental release and hassle-free continuous integration, still it could be a big threat for a large software system. Our first investigation will focus on understanding how flags are being used throughout the system and how they are being toggled.
+\item How many features get toggled in a release and how long lived are they?\newline
+\item What percentage of code that is under feature toggles. How many are reverted right before a release / during stabilization?\newline
+\item Who are the developer(s) do the toggling?\newline
+\item What aspects lead developers to make feature toggles?\newline
 \end{enumerate}
 
-\section{Background}
-TODO...
+\section{Feature Development and Feature Toggles}
 
-\section{Related Works}
-TODO...
+\textit{RQ1: What is Feature Flag, how are feature flags are being used?}
+
+Feature toggles are basically toggling different feature flags in the code-base of a software product to enable or disable corresponding features. While working in a development team developers are inter-related and inter dependent some how, because at the end of the day developments from all different developers will be merged together. Expecting developers will push their work once they are done and all their codes are tested and verified is totally absurd in practical life. "We can't leave a hole in the system to plug-in your work later" to overcome this inability, feature flags appeared to be practiced by developers from their very practical need. Feature toggling is a technique that allows us to maintain multiple feature areas together along with the same release that could be developed in a separate feature branch.
+
+\textit{\textbf{What is a feature flag}}? If we explain in a bit lower level, feature flag is just a simple boolean condition. It can simply be a \textit{\textbf{switch}} or an \textit{\textbf{if}} statement. Sometimes it could be called as Feature Bits or Feature Flippers [ref][ref]. Martin Fowler, In his personal home page has published an interesting article on feature toggles on 29th October 2010.
+
+He said that feature toggles provide a mechanism for pending features that takes longer time than a regular release cycle. If we have to release our software product every two weeks and we are developing a feature that's not going to be done even in a month then it is feature-flags that can allow us still integrate our half developed features[ref].
+
+\textit{\textbf{How feature toggles are used?}}
+A Basic Concept of using feature toggles is outlined by Martin Fowler in his article which is as follows:
+\renewcommand{\labelenumi}{\theenumi:}
+\begin{enumerate}
+\item Have a configuration file listing all the feature toggles.
+\item Use these flags in the code of the running application.
+\item Block the entry points to the feature by toggling the corresponding flag to 'false' while developing or testing.
+\item Unblock the feature just by toggling in the config file again when the feature is supposed to be released.
+\end{enumerate}
+
+Fowler also categorized another types of flags and toggling as "Business Toggles" that is similar to feature toggles but deals with business logic of a system but we are interested to focus on feature toggles only in this study.
+
+\section{Motivation}
+Feature Toggle is not a newly invented technique in software development. By using conditional statements dividing a feature into subsections or blocking some features based on respective business logics, distributing a new feature in limited area or among limited number of customers is a practice that developers are practicing for a long time. Using conditions in mainline code to control different features by avoiding branching in many ways that we find in developments more than 20 years back when we didn't have any easier way to manage code that's been overcome by DVCs later on.
+
+Around the end of last century and beginning of current century branching and version control tools like Git, Assembla, SourceForge, tigris arrived with a bunch of facilities and flexibilities to manage a code-base allowing developers even working remotely. Branching allows features get developed in an isolated way in parallel without affecting other branches or even the main line. Developers were happy to have this new branching system and gladly accepted it as branching expands software projects and their development communities dramatically. Open source projects like Linux Kernel use more than 60 different branches \ref{Rigby2013RELENG}. But as software project get enlarged and branching goes deeper and deeper it introduces additional overhead [ref:bird,zimmerman] that can make the integration process harder and uncomfortable. Emad Shihab with Christain Bird and T. Zimmerman examined the effectiveness of branching strategies on software quality [ref:bird,zimmerman] and they could conclude with some recommendations of branching when they found that branching activity, branch depth and mismatch with branching structure and organizational or system structure are the main factors that put strong impact on software quality in terms of post release bugs.
+
+As a system grows up the branching activity will increase at the same time. It's really hard to manage features being developed always concentrated into one single branch or a small branch tree. Practical scenario and customer demands may not allow us to distribute features restricted to one or two group(s) of developers. Thus for large software projects over-branching activities lead to integration failures very often.
+
+Recently scientists are whispering about and software companies started practicing the old informal way of virtual branching in the code-base based on feature flags, either by traditionally or started newly to get rid off the branching overheads and integration failures around the time of release. Features toggling takes off the merge problems, eliminates the costs of maintaining so many branches. Careful management of feature-flags and appropriate toggling reduces the deployment risk through canary releases.
 
 \section{Methodology}
 TODO...
