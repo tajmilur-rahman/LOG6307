@@ -1,0 +1,92 @@
+=== Run information ===
+
+Scheme:weka.classifiers.functions.Logistic -R 1.0E-8 -M -1
+Relation:     DJANGO
+Instances:    27462
+Attributes:   14
+              ns
+              nd
+              nf
+              entropy
+              la
+              ld
+              fix
+              ndev
+              age
+              nuc
+              exp
+              rexp
+              sexp
+              bug
+Test mode:10-fold cross-validation
+
+=== Classifier model (full training set) ===
+
+Logistic Regression with ridge parameter of 1.0E-8
+Coefficients...
+               Class
+Variable           0
+====================
+ns           -0.3887
+nd            0.0128
+nf            0.0007
+entropy      -0.4978
+la                 0
+ld                 0
+fix          -0.0475
+ndev          -0.003
+age           0.0003
+nuc          -0.0356
+exp           0.0001
+rexp               0
+sexp         -0.0002
+Intercept     1.8715
+
+
+Odds Ratios...
+               Class
+Variable           0
+====================
+ns            0.6779
+nd            1.0129
+nf            1.0007
+entropy       0.6078
+la                 1
+ld                 1
+fix           0.9536
+ndev           0.997
+age           1.0003
+nuc            0.965
+exp           1.0001
+rexp               1
+sexp          0.9998
+
+
+Time taken to build model: 1.06 seconds
+
+=== Stratified cross-validation ===
+=== Summary ===
+
+Correctly Classified Instances       20227               73.6545 %
+Incorrectly Classified Instances      7235               26.3455 %
+Kappa statistic                          0.1423
+Mean absolute error                      0.3607
+Root mean squared error                  0.4249
+Relative absolute error                 90.7888 %
+Root relative squared error             95.3299 %
+Total Number of Instances            27462     
+
+=== Detailed Accuracy By Class ===
+
+               TP Rate   FP Rate   Precision   Recall  F-Measure   ROC Area  Class
+                 0.956     0.846      0.75      0.956     0.841      0.693    0
+                 0.154     0.044      0.567     0.154     0.243      0.693    1
+Weighted Avg.    0.737     0.627      0.7       0.737     0.677      0.693
+
+=== Confusion Matrix ===
+
+     a     b   <-- classified as
+ 19068   885 |     a = 0
+  6350  1159 |     b = 1
+
+
