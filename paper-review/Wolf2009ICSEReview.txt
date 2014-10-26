@@ -1,49 +1,43 @@
 Title of the paper: Predicting Build Failures using Social Network Analysis on Developer Communication
 
-Key Points:
+Key Points: 
+1. Study development team communication structure with social network measure, Conceptualizing the importance of social network communication for the quality of software build process.
+
+2. No individual measure could indicate whether a build will be succeed or fail.
 
 Positive:
-**
+---------
+1. This is interesting that social network structure of communication can be a predictor of software integration quality.
+2. Combination of communication structure is a great idea for measuring the network structure.
 
-
-
-
-**
-
-
-
-
-**
-
-
-
-
-
-1. Results indicate that developer communication plays an important role in the quality of software integrations
 
 Negetive:
-**
+---------
+1. Here warnings (WARNING) and Ok (OK) messages from the build results are being treated as same types of coordication outcome. Only the ERROR build results are being treated as to require further coordication and development effort.
+
+May for the particular project (IBM Jazz) we can treat warnings as trivial problems of the system but for many other software systems warnings are not trivial always. For example compiler warnings are always the first line weakness of the system. It can be treated as compile error. Definitly in that case development teams will not be happy with such kind of warnings and extra effort will be put to get rid off this warning.
+
+2. This paper claims that the results indicate developer communication plays an important role in the quality of software integration but it is not clear that how important that is. How significantly these results can do the prediction. I was expecting any tabular representation of the communication measures Density, Centrality and Structure Hole.
+How these factors are related and what are the individual involvements of them in the process?
+
+3. I have a little objection about the title of the paper as well. "Predictive Build Failures using Social Network Analysis on Development Communication":
+** The term "Social Network" increase the expections from the study but the study mainly focused on organizational network structure that IBM Jaaz belongs to. The structure is mainly obtained from how the different branches are connected to each other. "Social Network" in general may include other medias as well like Email, chatting, other web-based communications.
+** The term "Development Communication" was not found in the study. All I found is the study of communication structure.
 
 
+Score: 0 (scale: -3 to +3)
 
 
-**
+1. Novelty of the contribution: I didn't find any novelty in this study, it is just a simple prediction model by taking some factors of communication which are not the only factors of measuring communication structure. Although the prediction model is not applied to other projects to verify it.
+ 
+2. Quality of the approach: Average
 
+3. Correctness of the empirical analysis: Correct
 
+4. How interesting are the results: are they actionable? Interesting
 
+5. Related work that was missed:
+** Study communication of developers by analyzing their topic of discussions.
+** Structure of the organization, comparing between remotely working teams and inhouse teams
 
-**
-
-
-
-
-
-Score: (scale: -3 to +3)
-
-
-1. Novelty of the contribution:
-2. Quality of the approach:
-3. Correctness of the empirical analysis:
-4. How interesting are the results? are they actionable?
-5. Related work that was missed?
-6. Potential ideas for future work?
+6. Potential ideas for future work: Analyzing popular social network media discussions, mailing lists related to build and integration to understand the communication effectiveness and robustness that may help much better in predicting failure of builds.
