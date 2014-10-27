@@ -1,0 +1,52 @@
+
+predModData <- read.table("~/Documents/git/LOG6307/paper-replication/results/rq1.rpt", sep=",", header=T)
+cor(predModData)
+
+Follorwing facors having high correlation:
+------------------------------------------
+
+rexp 	~ exp	= 0.62
+nd 	~ nf	= 98%
+nd	~ la	= 64%
+nf 	~ la	= 66%	[std err: 9.2e+01]
+sexp 	~ exp	= 79%
+
+We are removing highly correlated factors.
+
+
+glm.out = glm(bug ~ ns * nd * nf * entropy * la * ld * fix * ndev * age * nuc * exp * rexp * sexp, family=binomial(logit), data=predModData)
+
+Factors and their significance in the model:
+ns                             9.765e-01  5.247e-02  18.611  < 2e-16 ***
+nf                             5.888e-02  1.415e-02   4.160 3.18e-05 ***
+entropy                        1.202e+00  8.909e-02  13.496  < 2e-16 ***
+la                             1.726e-03  3.288e-04   5.250 1.52e-07 ***
+ld                             2.087e-03  6.194e-04   3.370 0.000752 ***
+
+ns:nf                         -3.025e-02  6.894e-03  -4.387 1.15e-05 ***
+ns:entropy                    -4.222e-01  4.625e-02  -9.129  < 2e-16 ***
+nf:entropy                    -1.543e-02  5.207e-03  -2.964 0.003040 ** 
+ns:la                         -4.607e-04  1.605e-04  -2.870 0.004102 ** 
+nf:la                         -3.172e-05  6.444e-06  -4.922 8.55e-07 ***
+
+LARS/LAR
+Call: lars(x = x.1, y = y.1, type = "lar", trace = TRUE)
+   Df    Rss       Cp
+0   1 2728.8 1377.733
+1   2 2702.6 1234.344
+2   3 2488.7   47.141
+3   4 2488.6   49.037
+4   5 2488.1   47.890
+5   6 2487.3   45.775
+6   7 2484.6   32.495
+7   8 2481.8   19.278
+8   9 2481.0   16.588
+9  10 2479.8   12.045
+10 11 2479.1   10.286
+11 12 2478.9   11.131
+12 13 2478.8   12.354
+13 14 2478.7   14.000
+> coef(lar.1, s=which.min(a$Cp), mode="step") 
+           ns            nd            nf       entropy            la            ld           fix          ndev           age           nuc           exp          rexp          sexp 
+ 8.921032e-02 -1.060066e-03  9.328003e-05  1.041321e-01 -3.681781e-06  0.000000e+00  0.000000e+00  3.576503e-04 -6.196646e-05  1.944206e-03  0.000000e+00 -4.301769e-06  4.796161e-06 
+
