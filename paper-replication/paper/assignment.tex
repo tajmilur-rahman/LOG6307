@@ -57,8 +57,53 @@ Phasellus laoreet ipsum non nunc sodales molestie. Aliquam rutrum urna ante, at 
 \section{Approach}
 \label{sec:approach}
 
+\begin{tabular}{|c|l|p{3cm}|p{6cm}|l|}
+	\hline Dim. & Name & Definition & Rationale & Related Work \\ 
+	\hline \multirow{10}{*}{\begin{sideways}Diffusion\end{sideways}} & NS & Number of modified subsystems  & Changes modifying many subsystems are more likely to be defect-prone. &  \\ \cline{2-5}  
+	 & ND & Number of modified directories & Changes touching many files are more likely to be defect-prone. &  \\ \cline{2-5}  
+	 & NF & Number of modified files & Changes touching many files are more likely to be defect-prone. &  \\ \cline{2-5} 
+	 & Entropy & Distribution of modified code across each file & Changes with high entropy are more likely to be defect-prone, because a developer will have to recall and track large numbers of scattered changes across each file. &  \\ 
+	\hline \multirow{2}{*}{\begin{sideways}Size\end{sideways}} & LA & Lines of code added & The more lines of code added, the more likely a defect is introduced. &  \\ \cline{2-5} 
+	  & LD & Lines of code deleted & The more lines of code deleted, the higher the chance of a defect. &  \\ 
+	\hline Purpose & FIX & Whether or not the change is defect fix & Fixing a defect means that an error was made in an earlier implementation, therefore it may indicate an area where errors are more likely. &  \\ 
+	\hline \multirow{3}{*}{\begin{sideways}History\end{sideways}} & NDEV & The number of developers that changed the modified files & The larger the NDEV, the more likely a defect is introduced, because files revised by many developers often contain different design thoughts and coding styles. &  \\ \cline{2-5} 
+	& AGE & The avergae time interval between the last and current change & The lower the AGE (i.e., the more recent the last change), the more likely a defect will be introduced. &  \\ \cline{2-5} 
+	& NUC & The number of unique changes to the modified files & The larger the NUC, the more likely a defect is introduced, because a developer will have to recalland track many previous changes. &  \\ 
+	\hline \multirow{3}{*}{\begin{sideways}Experience\end{sideways}} & EXP & Developer experience & More experienced developers are less likely to introduced a defect. &  \\ \cline{2-5} 
+	& REXP & Recent developer experience & A developer that has often modified the files in recent months is less likely to introduce defect, because they will be more familiar with recent developments in the system. &  \\ \cline{2-5} 
+	& SEXP & Developer experience on a subsystem & Developers that are familiar with the subsystems modified by a change are less likely to introduce defects. &  \\ 
+	\hline 
+\end{tabular} 
+
 \section{Results}
 \label{sec:results}
+
+\begin{tabular}{|c|c|c|c|c|c|c|c|c|}
+	\hline 
+	Period  & Total number of commits with changes  & Percentage of defect inducing commits  & Average LOC per file  & Avg. LOC per changes  & \# of modified files per changes  & \# of changes per day  & Max \# dev. per file  & Avg. \# of dev. per file \tabularnewline
+	\hline 
+	12/07/2005 - 19/09/2014  & 26606  & 28.2% & 142.5 & 272.3 & 4.6 & 7.9 & 143 & 5.7 \\ 
+	&  &  &  &  &  & \tabularnewline
+\end{tabular}
+
+
+\subsection{RQ1: How well can we predict defect-inducing changes?}
+\label{sec:rq1}
+
+
+\subsection{RQ2: What are the major characteristics of defect-inducing changes?}
+\label{sec:rq2}
+
+\begin{tabular}{|c|c|c|}
+	\hline 
+	true\ classified  & No defect  & defect \tabularnewline
+	\hline 
+	No defect  & 19068  & 885 \tabularnewline
+	\hline 
+	defect  & 6350  & 1159 \tabularnewline
+	\hline 
+\end{tabular}
+
 
 \section{Comparison of Results}
 \label{sec:comparison-results}
