@@ -35,6 +35,7 @@
 	\emph{$^{1}$ Dept. of Computer Science and Engineering, Concordia University, Qu\'{e}bec, Canada}
 }
 
+
 \begin{document}
 \maketitle
 
@@ -45,18 +46,24 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam nibh nisi, ultricie
 \section{Introduction}
 \label{sec:introduction}
 
-Quality assurance in software development plays the prominent role for a software to turn it into a successful business product. Doing business with a software product by providing services or by selling the software itself demands high level of quality assurance and quality can be assured in software industries by unit test, black-box, white-box, integration, functional and system level testing. Testing is not just the end of the quality assurance but the start of working for assuring quality of a software system. Testing produces list of regressions and flaws throughout the system that keeps the development team busy for fixing bugs to make the system flaw-less. Generally this fixing and testing be practised during the stabilization period once all the new feature development works are done. We can estimate development time and cost prior to a development cycle but the effort that stabilization period consumes for fixing does influence the cost of software product and reputation of the software industry.
+Quality assurance in software development plays the prominent role for a software to turn it into a successful business product. Doing business with a software product by providing services or by selling the software itself demands high level of quality assurance and quality can be assured in software industries by unit test, black-box, white-box, integration, functional and system level testing. Testing is not just the end of the quality assurance but the start of working for assuring quality of a software system. Testing produces list of regressions and flaws throughout the system that keeps the development team busy for fixing bugs to make the system flaw-less. Generally this fixing and testing be practised during the stabilization period once all the new feature development works are done. We can estimate development time and cost prior to a development cycle but the effort that stabilization period consumes for fixing does influence the cost of software product and reputation of the software industry. 
 
 In current trend many researchers are focusing on predicting defects in the code-base of the software system~\cite{Gyimothy2005IEEE}. In some contexts this approach can be useful but they have drawbacks. Predicting bugs does not specify the amount of work and cannot minimize the effort in a great deal but comparatively predicting the particular change that could be defect inducing would be more efficient to reduce the effort for fixing bugs around the time of release. This is really important for reducing the stabilization time and releasing the software product sooner to beat competitors in the market.
 
 \section{Background and Related Work}
 \label{sec:backgr-relat-work}
 
-Phasellus laoreet ipsum non nunc sodales molestie. Aliquam rutrum urna ante, at dictum odio dictum in. Quisque sit amet lorem non mi adipiscing aliquam. Suspendisse potenti. Aenean congue a risus vel posuere. Vestibulum tempor commodo ipsum vitae congue. Nunc vestibulum volutpat sapien quis tincidunt. Vestibulum vitae ullamcorper eros. Integer luctus quam risus~\cite{humble10}. Suspendisse scelerisque nulla nulla, sed ullamcorper enim faucibus sed. Curabitur bibendum ipsum quis justo tincidunt, et pulvinar enim ullamcorper. Pellentesque et tempor turpis. Pellentesque vel nisi metus. Proin laoreet vehicula vestibulum. Vivamus iaculis urna velit, et pharetra risus scelerisque quis~\cite{baysal11}.
+Due to achieve the quality assurance of a software system software engineers and researchers are concerned since many years. Many approaches have been followed and scientists have tried from many different angle to predict defects in software for enhancing quality assurance. Earlier in 2005 Nagappan and T. Ball did an interesting research in Microsoft to predict file level defect density~\cite{Nagappan2005ICSE} based on relative code-churn measure. Later on an approach of predicting defect-prone components has been studied by Nagappan et al. In this study they showed that the change bursts can predict defect-prone components in significantly high rate in comparison to other measures like code-churn or organization structure.
+
+Many other researchers have used change measure, for example Mockus and Weiss~\cite{Mockus2000Bell} used change measures, such as the number of subsystems those are changed, number of modified, lines of code added and the number of modification requests. Now a days churn factor measure become a very traditional approach in predicting defects. From a slightly different angle Sunghun Kim~\cite{Kim2011ICSE} proposes an approach to deal with the noise in defect data as he could realize that automatically collected defect data based on the change logs could include noises.
+
+Many research have been performed comparing open source and commercial projects. Briand et al.~\cite{Briand1999ICSE} did an analysis with the relationship between software design and quality. Zimmermann et al.\cite{Zimmermann2009ESECS} showed that there is no single factor that leads to accurate predictions. They focused on defect prediction from one project to another based on seven commercial projects and four open source projects. Existing research works create the impression that we can predict defects in a software system in many different ways having little variation in accuracy and prediction performance. But this does not help us reducing the fixing time that much. We still need to find out the particular change in the code that is involved in producing the bug.
+
 
 \section{Approach}
 \label{sec:approach}
-
+Similarly to previous work, we use a logistic regression model to perform our prediction [4], [8], [17]. The logistic regression model outputs a probability, i.e., a value between 0 and 1, for each change. We use a threshold value of 0.5, which means that if the model-predicted probability of a defect is greater than 0.5, the change is classified as defect inducing; otherwise, it is classified as non-defect-inducing [16], [17]. To avoid overfitting our models, we select a minimal set of factors to include as independent variables of the models. First, we manually remove highly correlated factors, then we use stepwise variable selection based on Mallows’ Cp criterion [31] to remove the remaining collinear metrics and those metrics that do not contribute to the model. This selection technique proceeds by deleting the worst variable from the full model until deleting any remaining variables would no longer be beneficial. To evaluate the prediction performance, we employ the commonly used accuracy, precision, recall, and F1-measures. These measures can be derived from a confusion matrix, as shown in Table 3. A change can be classified as defect inducing when it is truly defect inducing (true positive, TP); it can be classified as defect inducing when it is actually not (false positive, FP); it can be classified as non-defect-inducing when it is actually defect inducing (false negative, FN); or it can be correctly classified as non-defect-inducing (true negative, TN).
+\onecolumn
 \begin{tabular}{|c|l|p{3cm}|p{6cm}|l|}
 	\hline Dim. & Name & Definition & Rationale & Related Work \\ 
 	\hline \multirow{10}{*}{\begin{sideways}Diffusion\end{sideways}} & NS & Number of modified subsystems  & Changes modifying many subsystems are more likely to be defect-prone. &  \\ \cline{2-5}  
@@ -75,6 +82,7 @@ Phasellus laoreet ipsum non nunc sodales molestie. Aliquam rutrum urna ante, at 
 	\hline 
 \end{tabular} 
 
+\twocolumn
 \section{Results}
 \label{sec:results}
 
