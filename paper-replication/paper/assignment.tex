@@ -62,8 +62,14 @@ Many research have been performed comparing open source and commercial projects.
 
 \section{Approach}
 \label{sec:approach}
-Similarly to previous work, we use a logistic regression model to perform our prediction [4], [8], [17]. The logistic regression model outputs a probability, i.e., a value between 0 and 1, for each change. We use a threshold value of 0.5, which means that if the model-predicted probability of a defect is greater than 0.5, the change is classified as defect inducing; otherwise, it is classified as non-defect-inducing [16], [17]. To avoid overfitting our models, we select a minimal set of factors to include as independent variables of the models. First, we manually remove highly correlated factors, then we use stepwise variable selection based on Mallows’ Cp criterion [31] to remove the remaining collinear metrics and those metrics that do not contribute to the model. This selection technique proceeds by deleting the worst variable from the full model until deleting any remaining variables would no longer be beneficial. To evaluate the prediction performance, we employ the commonly used accuracy, precision, recall, and F1-measures. These measures can be derived from a confusion matrix, as shown in Table 3. A change can be classified as defect inducing when it is truly defect inducing (true positive, TP); it can be classified as defect inducing when it is actually not (false positive, FP); it can be classified as non-defect-inducing when it is actually defect inducing (false negative, FN); or it can be correctly classified as non-defect-inducing (true negative, TN).
-\onecolumn
+Similarly to previous work, we use a logistic regression model to perform our prediction [4], [8], [17]. The logistic regression model outputs a probability, i.e., a value between 0 and 1, for each change. We use a threshold value of 0.5, which means that if the model-predicted probability of a defect is greater than 0.5, the change is classified as defect inducing; otherwise, it is classified as non-defect-inducing [16], [17]. To avoid overfitting our models, we select a minimal set of factors to include as independent variables of the models. First, we manually remove highly correlated factors, then we use stepwise variable selection based on Mallows’ Cp criterion [31] to remove the remaining collinear metrics and those metrics that do not contribute to the model. This selection technique proceeds by deleting the worst variable from the full model until deleting any remaining variables would no longer be beneficial. To evaluate the prediction performance, we employ the commonly used accuracy, precision, recall, and F1-measures. These measures can be derived from a confusion matrix, as shown in Table 3. A change can be classified as defect inducing when it is truly defect inducing (true positive, TP); it can be classified as defect inducing when it is actually not (false positive, FP); it can be classified as non-defect-inducing when it is actually defect inducing (false negative, FN); or it can be correctly classified as non-defect-inducing (true negative, TN). 
+
+Django uses the Git.   
+
+Django uses the Trac ticket software system to keep track of tickets which are created for the project. We extracted Some of these tickets (54\%) have a type assigned to them which identify the category of work which it covers. These types can refer to bugs/defects, new features, enhancements and cleanup/optimization ticket tasks. 
+
+
+
 \begin{tabular}{|c|l|p{2.5cm}|p{5.5cm}|p{5.25cm}|}
 	\hline Dim. & Name & Definition & Rationale & Related Work \\ 
 	\hline \multirow{14}{*}{\begin{sideways}Diffusion\end{sideways}} & NS & Number of modified subsystems  & Changes modifying many subsystems are more likely to be defect-prone. & The defect probability of a change increases with the number of modified subsystems \cite{Mockus2000Bell}. \\ \cline{2-5}  
@@ -82,21 +88,26 @@ Similarly to previous work, we use a logistic regression model to perform our pr
 	\hline 
 \end{tabular} 
 
-\twocolumn
+The following 
+
+
+
 \section{Results}
 \label{sec:results}
 
-\begin{tabular}{|c|c|c|c|c|c|c|c|c|}
+\onecolumn
+\begin{tabular}{|p{2 cm}|p{1.5 cm}|p{1.5 cm}|p{1.5 cm}|p{1.5 cm}|p{1.5 cm}|p{1.5 cm}|p{1.5 cm}|p{1.5 cm}|}
 	\hline 
 	Period  & Total number of commits with changes  & Percentage of defect inducing commits  & Average LOC per file  & Avg. LOC per changes  & \# of modified files per changes  & \# of changes per day  & Max \# dev. per file  & Avg. \# of dev. per file \tabularnewline
 	\hline 
-	12/07/2005 - 19/09/2014  & 26606  & 28.2% & 142.5 & 272.3 & 4.6 & 7.9 & 143 & 5.7 \\ 
-	&  &  &  &  &  & \tabularnewline
+	12/07/2005 - 19/09/2014  & 26606  & 28.2\% & 142.5 & 272.3 & 4.6 & 7.9 & 143 & 5.7 \\ \hline 
 \end{tabular}
-
+\twocolumn
 
 \subsection{RQ1: How well can we predict defect-inducing changes?}
 \label{sec:rq1}
+
+Using WEKA we can determine 
 
 
 \subsection{RQ2: What are the major characteristics of defect-inducing changes?}
