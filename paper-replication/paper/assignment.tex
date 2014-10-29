@@ -30,7 +30,7 @@
 \renewcommand{\paragraph}[1]{\noindent\textsf{#1}.}
 
 \title{An Empirical Study for Prioritizing Quality Assurance : A Replication Work}
-\author{Md Tajmilur Rahman$^{1}$, Loui Philippe Querel$^{1}$
+\author{Md Tajmilur Rahman$^{1}$, Louis-Philippe Querel$^{1}$
     \\
 	\emph{$^{1}$ Dept. of Computer Science and Engineering, Concordia University, Qu\'{e}bec, Canada}
 }
@@ -64,20 +64,20 @@ Many research have been performed comparing open source and commercial projects.
 \label{sec:approach}
 Similarly to previous work, we use a logistic regression model to perform our prediction [4], [8], [17]. The logistic regression model outputs a probability, i.e., a value between 0 and 1, for each change. We use a threshold value of 0.5, which means that if the model-predicted probability of a defect is greater than 0.5, the change is classified as defect inducing; otherwise, it is classified as non-defect-inducing [16], [17]. To avoid overfitting our models, we select a minimal set of factors to include as independent variables of the models. First, we manually remove highly correlated factors, then we use stepwise variable selection based on Mallows’ Cp criterion [31] to remove the remaining collinear metrics and those metrics that do not contribute to the model. This selection technique proceeds by deleting the worst variable from the full model until deleting any remaining variables would no longer be beneficial. To evaluate the prediction performance, we employ the commonly used accuracy, precision, recall, and F1-measures. These measures can be derived from a confusion matrix, as shown in Table 3. A change can be classified as defect inducing when it is truly defect inducing (true positive, TP); it can be classified as defect inducing when it is actually not (false positive, FP); it can be classified as non-defect-inducing when it is actually defect inducing (false negative, FN); or it can be correctly classified as non-defect-inducing (true negative, TN).
 \onecolumn
-\begin{tabular}{|c|l|p{3cm}|p{6cm}|l|}
+\begin{tabular}{|c|l|p{2.5cm}|p{5.5cm}|p{5.25cm}|}
 	\hline Dim. & Name & Definition & Rationale & Related Work \\ 
-	\hline \multirow{10}{*}{\begin{sideways}Diffusion\end{sideways}} & NS & Number of modified subsystems  & Changes modifying many subsystems are more likely to be defect-prone. &  \\ \cline{2-5}  
-	 & ND & Number of modified directories & Changes touching many files are more likely to be defect-prone. &  \\ \cline{2-5}  
-	 & NF & Number of modified files & Changes touching many files are more likely to be defect-prone. &  \\ \cline{2-5} 
-	 & Entropy & Distribution of modified code across each file & Changes with high entropy are more likely to be defect-prone, because a developer will have to recall and track large numbers of scattered changes across each file. &  \\ 
-	\hline \multirow{2}{*}{\begin{sideways}Size\end{sideways}} & LA & Lines of code added & The more lines of code added, the more likely a defect is introduced. &  \\ \cline{2-5} 
+	\hline \multirow{14}{*}{\begin{sideways}Diffusion\end{sideways}} & NS & Number of modified subsystems  & Changes modifying many subsystems are more likely to be defect-prone. & The defect probability of a change increases with the number of modified subsystems \cite{Mockus2000Bell}. \\ \cline{2-5}  
+	 & ND & Number of modified directories & Changes touching many files are more likely to be defect-prone. & The higher the number of modified directories, the higher the chance that a change will induce a defect \cite{Mockus2000Bell}. \\ \cline{2-5}  
+	 & NF & Number of modified files & Changes touching many files are more likely to be defect-prone. & The number of classes in a module is a good featureof post-release defects of a module \cite{Nagappan2006ICSE}. \\ \cline{2-5} 
+	 & Entropy & Distribution of modified code across each file & Changes with high entropy are more likely to be defect-prone, because a developer will have to recall and track large numbers of scattered changes across each file. & Scattered changes are more likely to introduce defects \cite{DAmbross2010MSR}, \cite{Hassan2009ICSE}. \\ 
+	\hline \multirow{4}{*}{\begin{sideways}Size\end{sideways}} & LA & Lines of code added & The more lines of code added, the more likely a defect is introduced. & \multirow{2}{5.25cm}{Relative code churn measures are good indicators of defect modules \cite{Moser2008ICSE}, \cite{Nagappan2005ICSE}}. \\ \cline{2-4} 
 	  & LD & Lines of code deleted & The more lines of code deleted, the higher the chance of a defect. &  \\ 
-	\hline Purpose & FIX & Whether or not the change is defect fix & Fixing a defect means that an error was made in an earlier implementation, therefore it may indicate an area where errors are more likely. &  \\ 
-	\hline \multirow{3}{*}{\begin{sideways}History\end{sideways}} & NDEV & The number of developers that changed the modified files & The larger the NDEV, the more likely a defect is introduced, because files revised by many developers often contain different design thoughts and coding styles. &  \\ \cline{2-5} 
-	& AGE & The avergae time interval between the last and current change & The lower the AGE (i.e., the more recent the last change), the more likely a defect will be introduced. &  \\ \cline{2-5} 
-	& NUC & The number of unique changes to the modified files & The larger the NUC, the more likely a defect is introduced, because a developer will have to recalland track many previous changes. &  \\ 
-	\hline \multirow{3}{*}{\begin{sideways}Experience\end{sideways}} & EXP & Developer experience & More experienced developers are less likely to introduced a defect. &  \\ \cline{2-5} 
-	& REXP & Recent developer experience & A developer that has often modified the files in recent months is less likely to introduce defect, because they will be more familiar with recent developments in the system. &  \\ \cline{2-5} 
+	\hline \multirow{4}{*}{\begin{sideways}Purpose\end{sideways}} & FIX & Whether or not the change is defect fix & Fixing a defect means that an error was made in an earlier implementation, therefore it may indicate an area where errors are more likely. & Changes that fix defects are more likely to introduce defects than changes that implement new functionality \cite{Guo2010ICSE}, \cite{Purushothaman2005IEEE}. \\ 
+	\hline \multirow{13}{*}{\begin{sideways}History\end{sideways}} & NDEV & The number of developers that changed the modified files & The larger the NDEV, the more likely a defect is introduced, because files revised by many developers often contain different design thoughts and coding styles. & Files previously touched by more developers contain more defects \cite{Matsumoto2010PROMISE}. \\ \cline{2-5} 
+	& AGE & The avergae time interval between the last and current change & The lower the AGE (i.e., the more recent the last change), the more likely a defect will be introduced. & More recent changes contribute more defects than older changes \cite{Graves2000IEEE}. \\ \cline{2-5} 
+	& NUC & The number of unique changes to the modified files & The larger the NUC, the more likely a defect is introduced, because a developer will have to recalland track many previous changes. & The larger the spread of modified files, the higher the complexity \cite{DAmbross2010MSR}, \cite{Hassan2009ICSE}. \\ 
+	\hline \multirow{10}{*}{\begin{sideways}Experience\end{sideways}} & EXP & Developer experience & More experienced developers are less likely to introduced a defect. & Programmer experience significantly decreases the defect probability \cite{Mockus2000Bell}. \\ \cline{2-4} 
+	& REXP & Recent developer experience & A developer that has often modified the files in recent months is less likely to introduce defect, because they will be more familiar with recent developments in the system. &  \\ \cline{2-4} 
 	& SEXP & Developer experience on a subsystem & Developers that are familiar with the subsystems modified by a change are less likely to introduce defects. &  \\ 
 	\hline 
 \end{tabular} 
