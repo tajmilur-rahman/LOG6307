@@ -10,6 +10,7 @@
 \usepackage{epstopdf}
 \usepackage{multirow}
 \usepackage{rotating}
+\usepackage{caption}
 %\usepackage{subfigure}
 \usepackage{subfig}
 \usepackage{float}
@@ -69,7 +70,9 @@ Django uses the Git.
 Django uses the Trac ticket software system to keep track of tickets which are created for the project. We extracted Some of these tickets (54\%) have a type assigned to them which identify the category of work which it covers. These types can refer to bugs/defects, new features, enhancements and cleanup/optimization ticket tasks. 
 
 
-
+\begin{table}
+	\onecolumn
+	\caption{Summary of Change Measures}
 \begin{tabular}{|c|l|p{2.5cm}|p{5.5cm}|p{5.25cm}|}
 	\hline Dim. & Name & Definition & Rationale & Related Work \\ 
 	\hline \multirow{14}{*}{\begin{sideways}Diffusion\end{sideways}} & NS & Number of modified subsystems  & Changes modifying many subsystems are more likely to be defect-prone. & The defect probability of a change increases with the number of modified subsystems \cite{Mockus2000Bell}. \\ \cline{2-5}  
@@ -88,6 +91,9 @@ Django uses the Trac ticket software system to keep track of tickets which are c
 	\hline 
 \end{tabular} 
 
+\label{table:factors}
+\end{table}
+
 The following 
 
 
@@ -95,33 +101,95 @@ The following
 \section{Results}
 \label{sec:results}
 
-\onecolumn
-\begin{tabular}{|p{2 cm}|p{1.5 cm}|p{1.5 cm}|p{1.5 cm}|p{1.5 cm}|p{1.5 cm}|p{1.5 cm}|p{1.5 cm}|p{1.5 cm}|}
-	\hline 
-	Period  & Total number of commits with changes  & Percentage of defect inducing commits  & Average LOC per file  & Avg. LOC per changes  & \# of modified files per changes  & \# of changes per day  & Max \# dev. per file  & Avg. \# of dev. per file \tabularnewline
-	\hline 
-	12/07/2005 - 19/09/2014  & 26606  & 28.2\% & 142.5 & 272.3 & 4.6 & 7.9 & 143 & 5.7 \\ \hline 
-\end{tabular}
-\twocolumn
+\begin{table}
+	\begin{tabular}{|p{2 cm}|p{1.5 cm}|p{1.5 cm}|p{1.5 cm}|p{1.5 cm}|p{1.5 cm}|p{1.5 cm}|p{1.5 cm}|p{1.5 cm}|}
+		\hline 
+		Period  & Total number of commits with changes  & Percentage of defect inducing commits  & Average LOC per file  & Avg. LOC per changes  & \# of modified files per changes  & \# of changes per day  & Max \# dev. per file  & Avg. \# of dev. per file \tabularnewline
+		\hline 
+		12/07/2005 - 19/09/2014  & 26606  & 28.2\% & 142.5 & 272.3 & 4.6 & 7.9 & 143 & 5.7 \\ \hline 
+	\end{tabular}
+	\label{table:statistics}	
+\end{table}
 
 \subsection{RQ1: How well can we predict defect-inducing changes?}
 \label{sec:rq1}
 
-Using WEKA we can determine 
+
+To avoid the overfitting of factors within the model we used the Using WEKA we can determine 
+
+Using this model which does nto contain the 
+\begin{table}
+	
+	\begin{tabular}{|c|c|c|}
+		\hline 
+		true\ classified  & No defect  & defect \tabularnewline
+		\hline 
+		No defect  & 19068  & 885 \tabularnewline
+		\hline 
+		defect  & 6350  & 1159 \tabularnewline
+		\hline 
+	\end{tabular}
+	\label{table:confusion}
+\end{table}
+
+\begin{table}
+	\begin{tabular}{|c|c|c|c|}
+		\hline Accuracy & Precision & Recall & F1 \\ 
+		\hline  &  &  &  \\ 
+		\hline 
+	\end{tabular}
+	
+	\label{table:prediction} 
+\end{table}
 
 
 \subsection{RQ2: What are the major characteristics of defect-inducing changes?}
 \label{sec:rq2}
 
-\begin{tabular}{|c|c|c|}
-	\hline 
-	true\ classified  & No defect  & defect \tabularnewline
-	\hline 
-	No defect  & 19068  & 885 \tabularnewline
-	\hline 
-	defect  & 6350  & 1159 \tabularnewline
-	\hline 
-\end{tabular}
+Using the factors from the model we can determine which of these are prone to Given that this replication study only covers one open source project and no commercial projects compared to the original paper we will not consUsing the full dataset we can evaluate the characteristics of defect inducing changes. 
+
+\begin{table}
+	\begin{tabular}{|c|c|c|c|}
+		\hline Metrics name & Impact & Django \\ 
+		\hline NS & - & 0.6779 \\ 
+		\hline ND & + & 1.0129 \\ 
+		\hline NF &  & 1.0007 \\ 
+		\hline Entropy & - & 0.6078 \\ 
+		\hline LA &  & 1 \\ 
+		\hline LD &  & 1 \\ 
+		\hline FIX & - & 0.9536 \\ 
+		\hline NDEV &  & 0.997 \\ 
+		\hline AGE &  & 1.0003 \\ 
+		\hline NUC &  & 0.965 \\ 
+		\hline EXP &  & 1.0001 \\ 
+		\hline REXP &  & 1 \\ 
+		\hline SEXP &  & 0.9998 \\ 
+		\hline 
+	\end{tabular}
+	\label{table:odds_ratio}  
+\end{table}
+
+
+\begin{table}
+	\begin{tabular}{|c|c|c|c|}
+		\hline Metrics name & Impact & Django \\ 
+		\hline NS & - & -0.3887 \\ 
+		\hline ND & + & 0.0128 \\ 
+		\hline NF &  & 0.0007 \\ 
+		\hline Entropy & - & -0.4978 \\ 
+		\hline LA &  & 0 \\ 
+		\hline LD &  & 0 \\ 
+		\hline FIX & - & -0.0475 \\ 
+		\hline NDEV &  & -0.003 \\ 
+		\hline AGE &  & 0.0003 \\ 
+		\hline NUC & - & -0.0356 \\ 
+		\hline EXP &  & 0.0001 \\ 
+		\hline REXP &  & 0 \\ 
+		\hline SEXP &  & -0.0002 \\ 
+		\hline 
+	\end{tabular}
+	\label{table:regression_coefficients} 
+\end{table}
 
 
 \section{Comparison of Results}
