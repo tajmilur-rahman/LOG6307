@@ -41,15 +41,26 @@
 \maketitle
 
 \begin{abstract}
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam nibh nisi, ultricies a placerat id, pharetra quis arcu. Donec ut rhoncus odio, in luctus turpis. Praesent in tellus in tellus volutpat sagittis non in felis. Praesent commodo, nisl ac ornare porta, quam libero consectetur mi, sed facilisis elit enim non ipsum. Ut consequat eros id ultricies iaculis. Ut pellentesque rhoncus neque. Integer vestibulum ac diam vitae faucibus. Sed sit amet viverra enim. Suspendisse eu nulla vel turpis auctor posuere sit amet non metus.
+TODO
+
 \end{abstract}
 
 \section{Introduction}
 \label{sec:introduction}
 
-Quality assurance in software development plays the prominent role for a software to turn it into a successful business product. Doing business with a software product by providing services or by selling the software itself demands high level of quality assurance and quality can be assured in software industries by unit test, black-box, white-box, integration, functional and system level testing. Testing is not just the end of the quality assurance but the start of working for assuring quality of a software system. Testing produces list of regressions and flaws throughout the system that keeps the development team busy for fixing bugs to make the system flaw-less. Generally this fixing and testing be practised during the stabilization period once all the new feature development works are done. We can estimate development time and cost prior to a development cycle but the effort that stabilization period consumes for fixing does influence the cost of software product and reputation of the software industry. 
+Quality assurance in software development plays the prominent role for a software to turn it into a successful business product. Doing business with a software product by providing services or by selling the software itself demands high level of quality assurance and quality can be assured in software industries by unit test, black-box, white-box, integration, functional and system level testing. Testing is not just the end of the quality assurance but the start of working for assuring quality of a software system. Testing produces list of regressions and flaws throughout the system that keeps the development team busy for fixing bugs to make the system flaw-less. Generally this fixing and testing be practised during the stabilization period once all the new feature development works are done. We can estimate development time and cost prior to a development cycle but the effort that stabilization period consumes for fixing does influence the cost of software product and reputation of the software industry.
 
 In current trend many researchers are focusing on predicting defects in the code-base of the software system~\cite{Gyimothy2005IEEE}. In some contexts this approach can be useful but they have drawbacks. Predicting bugs does not specify the amount of work and cannot minimize the effort in a great deal but comparatively predicting the particular change that could be defect inducing would be more efficient to reduce the effort for fixing bugs around the time of release. This is really important for reducing the stabilization time and releasing the software product sooner to beat competitors in the market.
+
+As most of the quality assurance research works are based on defect prediction on change level we would like to predict defect inducing changes~\cite{Kim2008TSE}. We would like to illustrate the prediction of defect inducing change to enhance software quality by replicating the approach proposed by Kamei et al.~\cite{Kamei2013TSE}. We would like to do this work on a relatively small project DJango based on the following two main research questions:
+
+\textit{RQ1, Prediction:} How well can we predict defect-inducing changes?
+
+Kamei and his co-researchers used six open source projects and five commercial projects. We would like to see how well the model predicts defect-inducing changes in a different software project.
+
+\textit{RQ2, Major Characteristics:} What are the major characteristics of defect-inducing changes?
+
+To answer this research question we want to observe the factors having the largest impact on the predictions. We want to identify the major characteristics of the defect inducing changes and would like to see if the number of files and whether or not the change fixes a defect are risk-increasing factors, also if the average time interval since the previous change is a risk-decreasing factor in RQ1.
 
 \section{Background and Related Work}
 \label{sec:backgr-relat-work}
@@ -68,7 +79,7 @@ Similarly to Kamei's work, we use a logistic regression model to perform our pre
 Kamei et al. selected a minimal set of factors to include as independent variables to avoid over-fitting the models. We followed the exactly similar approach at this point as we are also removing highly correlated factors manually but then instead of using Stepwise variable selection we are using LAR and LASSO methods~\cite{Flom2007NESUG} to remove the remaining collinear metrics and those metrics that do not contribute to the model. This technique begins by centering all the variables and it does scale the covariates. Initially, all parameters are set to 0, and then parameters are added based on correlations with current residual. 
 We used accuracy, precision, recall, and F1-measures to evaluate the performance of our model. The confusion matrix has been represented in Table~\ref{table:confusion}. A change True Positive (TP) indicates that the corresponding change is Defect inducing and False Negative (FN) indicates that the change is non-defect-inducing.
 
-Django uses the Git.   
+For 
 
 Django uses the Trac ticket software system to keep track of tickets which are created for the project. We extracted Some of these tickets (54\%) have a type assigned to them which identify the category of work which it covers. These types can refer to bugs/defects, new features, enhancements and cleanup/optimization ticket tasks. 
 
@@ -201,7 +212,7 @@ Using the factors from the model we can determine which of these are prone to Gi
 \section{Conclusion}
 \label{sec:conclusion}
 
-Sed ullamcorper augue a lectus mollis gravida. Aliquam in commodo tortor, eget dignissim velit. Phasellus suscipit felis non nisl consequat, quis tempus sapien volutpat. Pellentesque a sagittis lectus. Nunc quis pulvinar velit, quis auctor nisl. In sed erat lectus. Vivamus eget justo et urna consequat consequat. Praesent id nisl odio. Vestibulum aliquam sit amet risus vel pretium. Aenean blandit diam at sem vulputate, sed lobortis magna vulputate. Curabitur nisi velit, tempor ut elit non, aliquet tristique sem. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Vestibulum quis sollicitudin libero.
+TODO
 
 \section*{Acknowledgment}
 TODO
