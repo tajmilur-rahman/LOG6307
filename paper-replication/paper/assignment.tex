@@ -113,10 +113,13 @@ Django uses the Trac ticket software system to keep track of tickets which are c
 The following 
 
 
-\onecolumn
+
 \section{Results}
 \label{sec:results}
 
+In this section we will be presenting the results of our research questions which replicated the original paper. Django, the project which was selected for this replication is of similar size to other open source projects in the original paper. While Bugzilla is also a web application, it is programmed in a different programming language. As such Django which is a wed development framework written in python will serve to comparision to other open source projects which we being used in the original paper.
+
+\onecolumn
 \begin{table}
 	\caption{Django Project Statictics}
 	\begin{tabular}{|p{2 cm}|p{1.5 cm}|p{1.5 cm}|p{1.5 cm}|p{1.5 cm}|p{1.5 cm}|p{1.5 cm}|p{1.5 cm}|p{1.5 cm}|}
@@ -135,7 +138,11 @@ The following
 
 To avoid the overfitting of factors within the model we used the Using WEKA we can determine 
 
+Using the Weka functiona
+
 Using this model which does nto contain the 
+
+We present the results of the model in Tables \ref{table:confusion} and \ref{table:prediction}. The confusion matrix in table \ref{table:confusion} illustrate the performance of the model which used logistic regression and compares their results to the known values of which change introduced a defect. As illustrated we can see that our model performs better at identifying changes which cahnges are not defect-inducing. On changes which had no defects there was a recall of 95.8\% which reduce the risk of having a false positive. Of the 28.2\% (Table \ref{table:statistics}) of changes which are identified as defect-inducing in our dataset, only 14.6\% of these are recalled by the model. While there would be more instances of false negative, this would result in an increase in the number of defect-inducing changes which might go unnoticied until a defect ticket is openned by a user of the application.  
 \begin{table}
 	\centering
 	\caption{Django Confusion Matrix}
@@ -150,6 +157,8 @@ Using this model which does nto contain the
 	\end{tabular}
 	\label{table:confusion}
 \end{table}
+
+We used a ZeroR with 10 folds cross validation as our baseline to 
 
 \begin{table}
 	\centering
@@ -167,11 +176,13 @@ Using this model which does nto contain the
 \subsection{RQ2: What are the major characteristics of defect-inducing changes?}
 \label{sec:rq2}
 
-Using the factors from the model we can determine which of these are defect-inducing. Given that this replication study only covers one open source project and no commercial projects compared to the original paper we will not cons. Using the full dataset we can evaluate the characteristics of defect inducing changes.
+Using all the factors from our Django model (Table \ref{table:factors}) we can determine which factors are defect-inducing. Compared to the original paper this replication study only covers one open source project. Due to this we will be comparing it to the results of the original paper. 
 
 We followed the approach presented in the original paper of using positive and negative signs to illustrate the effect which a factor as of inducing defects in a change. Factors with a positive sign (+) will result in a higher probability that a change is defect-inducing. On the other hand factors with a negative sign (-) have the opposite effect and reduce the probability that a change is defect inducing.  
 
-Using the odds ratio results obtained from the model which are presented in table \ref{table:odds_ratio} we can determine the effect which these factors have on the probability that it is defect-inducing.  We can see that most factors have a negligable effect when the Django data is modelled. The number of directories in a change (ND) is the biggest defect-inducing factor for Django. More of the factors can be said to have a negative effect in inducing defects in Django. The number of subsystem (NS), Entropy and Fix fit within this category for Django. The presence of NS and Fix in the Django data appear to contradict the results which were presented in the original paper.
+Using the odds ratio results obtained from the model which are presented in table \ref{table:odds_ratio} we can determine the effect which these factors have on the probability that it is defect-inducing.  We can see that most factors have a negligable effect when the Django data is modelled. The number of directories in a change (ND) is the biggest defect-inducing factor for Django. Where a change includes modifications to more directories it shall be expected that there will be a higher probability of this change introducing a defect. More of the factors can be said to have a negative effect in inducing defects in Django. The number of subsystem (NS), Entropy and Fix fit within this category for Django. These results would indicate that the more subsystems are modified, the greater the risk of introducing a defect is reduced. The presence of Entropy as a defect-reducing factor would illustrate that the greater the distribution of changes in a Django change the lower the probability that a defet will be introduced. And finally where a change is made to correct an existing defect there is subsequent reduced probability of a defect being present in the lines affected by the change. 
+
+The result of these three factors with a negative effect present a rejection of their rationales as defined in Table \ref{table:factors}. The rationales in Table \ref{table:factors} indicate the expected behaviors of the factors on the probability of inducing-defects, however the project is not required to follow these assumptions as these results illustrate. The results can also be briefly compared to that of the original paper. A more throurough comparision is performed later in section \ref{sec:comparison-results}.  The presence of NS and Fix as defect-reducing factors in the Django data appear to contradict the results which were presented in the original paper.
 
 \begin{table}
 	\centering
@@ -196,8 +207,7 @@ Using the odds ratio results obtained from the model which are presented in tabl
 	\label{table:odds_ratio}  
 \end{table}
 
-Table \ref{table:regression_coefficients}
-
+The change factor's regression coefficients which are present in Table \ref{table:regression_coefficients} also illustrate similar results to the odds ratios of Table \ref{table:odds_ratio}. The finding which ND is defect-inducing in changes for Django is consistent with the results of the odds ratio in table \ref{table:odds_ratio}. A consistent selection of defect-reducing factors are also present in the regression coefficients in comparision to the odds ratio. The factors NS, Entropy, Fix and NUC would all reduce the probability of a change inducing defects in Django. The defect-reducing effect of NUC would indicate that the more changes which have been applied to a file the less probable it is that this file contains a defect. The defect-reducing effects of NS, Entropy and Fix were presented in a earlier paragraph of this section.
 \begin{table}
 	\centering
 	\caption{The Regression Coefficients of Change Factors}
