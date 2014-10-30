@@ -1,0 +1,67 @@
+﻿=== Run information ===
+
+Scheme:weka.classifiers.functions.Logistic -R 1.0E-8 -M -1
+Relation:     DJANGO-weka.filters.unsupervised.attribute.Remove-R2-3,6-9,11,13
+Instances:    27462
+Attributes:   6
+              ns
+              entropy
+              la
+              nuc
+              rexp
+              bug
+Test mode:10-fold cross-validation
+
+=== Classifier model (full training set) ===
+
+Logistic Regression with ridge parameter of 1.0E-8
+Coefficients...
+               Class
+Variable           0
+====================
+ns           -0.4347
+entropy      -0.4549
+la            0.0001
+nuc          -0.0287
+rexp               0
+Intercept     1.8305
+
+
+Odds Ratios...
+               Class
+Variable           0
+====================
+ns            0.6475
+entropy       0.6345
+la            1.0001
+nuc           0.9717
+rexp               1
+
+
+Time taken to build model: 0.44 seconds
+
+=== Stratified cross-validation ===
+=== Summary ===
+
+Correctly Classified Instances       20217               73.6181 %
+Incorrectly Classified Instances      7245               26.3819 %
+Kappa statistic                          0.1357
+Mean absolute error                      0.3618
+Root mean squared error                  0.4256
+Relative absolute error                 91.0446 %
+Root relative squared error             95.4803 %
+Total Number of Instances            27462     
+
+=== Detailed Accuracy By Class ===
+
+               TP Rate   FP Rate   Precision   Recall  F-Measure   ROC Area  Class
+                 0.958     0.854      0.749     0.958     0.841      0.69     0
+                 0.146     0.042      0.568     0.146     0.232      0.69     1
+Weighted Avg.    0.736     0.632      0.7       0.736     0.674      0.69 
+
+=== Confusion Matrix ===
+
+     a     b   <-- classified as
+ 19121   832 |     a = 0
+  6413  1096 |     b = 1
+

@@ -1,0 +1,45 @@
+﻿=== Run information ===
+
+Scheme:weka.classifiers.rules.ZeroR 
+Relation:     DJANGO-weka.filters.unsupervised.attribute.Remove-R2-3,6-9,11,13
+Instances:    27462
+Attributes:   6
+              ns
+              entropy
+              la
+              nuc
+              rexp
+              bug
+Test mode:10-fold cross-validation
+
+=== Classifier model (full training set) ===
+
+ZeroR predicts class value: 0
+
+Time taken to build model: 0.03 seconds
+
+=== Stratified cross-validation ===
+=== Summary ===
+
+Correctly Classified Instances       19953               72.6568 %
+Incorrectly Classified Instances      7509               27.3432 %
+Kappa statistic                          0     
+Mean absolute error                      0.3973
+Root mean squared error                  0.4457
+Relative absolute error                100      %
+Root relative squared error            100      %
+Total Number of Instances            27462     
+
+=== Detailed Accuracy By Class ===
+
+               TP Rate   FP Rate   Precision   Recall  F-Measure   ROC Area  Class
+                 1         1          0.727     1         0.842      0.5      0
+                 0         0          0         0         0          0.5      1
+Weighted Avg.    0.727     0.727      0.528     0.727     0.612      0.5  
+
+=== Confusion Matrix ===
+
+     a     b   <-- classified as
+ 19953     0 |     a = 0
+  7509     0 |     b = 1
+
