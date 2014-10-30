@@ -130,19 +130,7 @@ Kamei et al. selected a minimal set of factors to include as independent variabl
 
 In this section we will be presenting the results of our research questions which replicated the original paper. Django, the project which was selected for this replication is of similar size to other open source projects in the original paper (Table~\ref{table:statistics}). While Bugzilla is also a web application, it is programmed in a different programming language. As such Django which is a web development framework written in python will serve to comparision to other open source projects which we being used in the original paper.
 
-
-\subsection{RQ1: How well can we predict defect-inducing changes?}
-\label{sec:rq1}
-
-
-To avoid the overfitting of factors within the model we need to remove factors which are highly correlated. We used Weka's CfsSubsetEval attribute evaluator using the exhaustive search approach to identify the factors to retain. Like with subsequent models we used a 10 fold cross-validation approach to reduce the error rate of our model that could result from the data. Following it's execution it was determined that the factors NS, Entropy, LA, NUC and REXP would have the least coupling. We therefore deleted other factors from our model and retained the factors which were specified.
-
-
-
-Using this model which does not contain the 
-
-We present the results of the model in Tables \ref{table:confusion} and \ref{table:prediction}. The confusion matrix in table \ref{table:confusion} illustrate the performance of the model which used logistic regression and compares their results to the known values of which change introduced a defect. As illustrated we can see that our model performs better at identifying changes which cahnges are not defect-inducing. On changes which had no defects there was a recall of 95.8\% which reduce the risk of having a false positive. Of the 28.2\% (Table \ref{table:statistics}) of changes which are identified as defect-inducing in our dataset, only 14.6\% of these are recalled by the model. While there would be more instances of false negative, this would result in an increase in the number of defect-inducing changes which might go unnoticied until a defect ticket is openned by a user of the application.  
-\begin{table}[b]
+\begin{table}[t]
 	\centering
 	\caption{Django Confusion Matrix}
 	\begin{tabular}{|c|c|c|}
@@ -157,7 +145,17 @@ We present the results of the model in Tables \ref{table:confusion} and \ref{tab
 	\label{table:confusion}
 \end{table}
 
-We used a ZeroR model with 10 folds cross-validation as our baseline to compare against our logistic regression model. Following the execution of both models we have their comparisation in table \ref{table:prediction}. Overall there is a 32.6\% precision increase in the logistic regression model compared to the baseline. This improvement indicate that our model performs better then the baseline and this is also confirmed with the improved area under the curve (AUC) of 38.0\%.   
+\subsection{RQ1: How well can we predict defect-inducing changes?}
+\label{sec:rq1}
+
+Using our model we want to determine how well we can predict defect-indusing changes. This is achieved by building a model which uses the factors from the original paper using the Django dataset. Using logistic regression we can determine how these factors will have an impact on the probability that a change induces a defect, however some of these factor may correlate together and cause overfitting which may reduce the quality of our model.  
+
+To avoid the overfitting of factors within the model we need to remove factors which are highly correlated. We used Weka's CfsSubsetEval~\cite{Hall1998} attribute evaluator using the exhaustive search approach to identify the factors to retain. Like with subsequent models we used a 10 fold cross-validation approach to reduce the error rate of our model that could result from the data. Following it's execution it was determined that the factors NS, Entropy, LA, NUC and REXP would have the least correlation. We therefore deleted other factors from our model and retained these factors which were specified.
+
+Using this reduced model we then proceeded to run a 10 fold cross-validation of the logistic regression of the model. We present the results of the model in Tables \ref{table:confusion} and \ref{table:prediction}. The confusion matrix in table \ref{table:confusion} illustrate the performance of the model which used logistic regression and compares their results to the known values of which change introduced a defect. As illustrated we can see that our model performs better at identifying changes which cahnges are not defect-inducing. On changes which had no defects there was a recall of 95.8\% which reduce the risk of having a false positive. Of the 28.2\% (Table \ref{table:statistics}) of changes which are identified as defect-inducing in our dataset, only 14.6\% of these are recalled by the model. While there would be more instances of false negative, this would result in an increase in the number of defect-inducing changes which might go unnoticied until a defect ticket is openned by a user of the application. 
+
+
+We used a ZeroR model with 10 folds cross-validation as our baseline to compare against our logistic regression model. Following the execution of both models we have their comparisation in table \ref{table:prediction}. Overall there is a 32.6\% precision increase in the logistic regression model compared to the baseline. This improvement indicate that our model performs better then the baseline and this is also confirmed with the improved area under the curve (AUC) of 38.0\%.  
 
 \begin{table}
 	\centering
