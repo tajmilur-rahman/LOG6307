@@ -139,9 +139,9 @@ In this section we will be presenting the results of our research questions whic
 \label{sec:rq1}
 
 
-To avoid the overfitting of factors within the model we used the Using WEKA we can determine 
+To avoid the overfitting of factors within the model we need to remove factors which are highly correlated. We used Weka's CfsSubsetEval attribute evaluator using the exhaustive search approach to identify the factors to retain. Like with subsequent models we used a 10 fold cross-validation approach to reduce the error rate of our model that could result from the data. Following it's execution it was determined that the factors NS, Entropy, LA, NUC and REXP would have the least coupling. We therefore deleted other factors from our model and retained the factors which were specified.
 
-Using the Weka functiona
+
 
 Using this model which does nto contain the 
 
@@ -151,7 +151,7 @@ We present the results of the model in Tables \ref{table:confusion} and \ref{tab
 	\caption{Django Confusion Matrix}
 	\begin{tabular}{|c|c|c|}
 		\hline 
-		true\ classified  & No defect  & defect \tabularnewline
+		true /\ classified  & No defect  & defect \tabularnewline
 		\hline 
 		No defect  & 19121  & 832 \tabularnewline
 		\hline 
@@ -161,14 +161,15 @@ We present the results of the model in Tables \ref{table:confusion} and \ref{tab
 	\label{table:confusion}
 \end{table}
 
-We used a ZeroR with 10 folds cross validation as our baseline to 
+We used a ZeroR model with 10 folds cross-validation as our baseline to compare against our logistic regression model. Following the execution of both models we have their comparisation in table \ref{table:prediction}. Overall there is a 32.6\% precision increase in the logistic regression model compared to the baseline. This improvement indicate that our model performs better then the baseline and this is also confirmed with the improved area under the curve (AUC) of 38.0\%.   
 
 \begin{table}
 	\centering
 	\caption{Prediction Performance}
-	\begin{tabular}{|c|c|c|c|c|}
-		\hline Accuracy & Precision & Recall & F1 & AUC\\ 
-		\hline 73.6\% & 70\% & 73.6\% & 67.4\% & 69.0\% \\ 
+	\begin{tabular}{|c|c|c|c|c||c|c|}
+		\hline \multirow{2}{*}{Accuracy} & \multirow{2}{*}{Prec.} & \multirow{2}{*}{Recall} & \multirow{2}{*}{F1} & \multirow{2}{*}{AUC} & \multicolumn{2}{|c|}{\% improvement} \\ \cline{6-7} 
+		 &  &  &  &  & Prec. & AUC \\  
+		\hline 73.6\% & 70.0\% & 73.6\% & 67.4\% & 69.0\% & 32.6\% & 38.0\% \\ 
 		\hline 
 	\end{tabular}
 	
