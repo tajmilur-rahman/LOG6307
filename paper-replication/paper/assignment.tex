@@ -267,7 +267,9 @@ Surprisingly the number of sub-systems "NS" is a defect reducing factor in our s
 \section{Conclusion}
 \label{sec:conclusion}
 
-This paper studies prioritizing quality assurance approach by replicating a similar work done previously to verify the existing approach. Our study results with higher accuracy, precision and recall of 73.6\%, 70.0\% and 73.6\% with F-measure of 67.4\%.
+This paper studies prioritizing quality assurance approach by replicating a similar work done previously to verify the existing approach. Our study results with higher accuracy, precision and recall of 73.6\%, 70.0\% and 73.6\% with F-measure of 67.4\%. We had 33.7\% records that we knew whether they are defect or they are of any other type as we were able to identify only 60\% of the regression data. Our prediction could give us be much better result if we would have higher number of regression data that we know what category they belong to.
+
+Similarly to the original work we could predict the defect-inducing changes using 10 fold data sets. We found some differences for couple of factors in our results while determining the major characteristics of defect-inducing changes. Over all, the change level prediction is an effective approach for prioritizing the actions to take for quality assurance of a software project. This replication work validates that a model which uses logistic regression could be used to provide recommendations for commits which may have a higher probability of being defect-inducing.
 
 \section*{Acknowledgment}
 We would like to thank Dr. Bram Adams for providing us with the Django data and for his continued support throughout the completion of this replication paper. We would also give a special thanks to Dr. Peter Rigby who's minimum supervision has allowed us to progress with our work.
