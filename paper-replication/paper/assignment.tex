@@ -40,7 +40,7 @@
 \maketitle
 
 \begin{abstract}
-Quality Assurance by predicting defects in software systems is a highly studied area in the current trend of software engineering research. Predicting defect prone files or modules are still not sufficient to save time for digging down to the actual defect inside the code that needs to be modified to fix a bug. In this case predicting actual defect-inducing change could be a better approach to resolve this insufficiency and may reduce the effort of fixing defects. One research work had already been done which focused on the issue of predicting defect-inducing changes in change/churn level. This influenced us to replicate the work on the small scale open source project Django. We correlate actual bug fixing changes with commits to improve quality of the dataset. A zero-R model has been implied to validate our logistic regression model. The result of our replication on Django project is different than the original work and we found that the defect-inducing factors from the original work have a defect-reducing characteristic in our replication with Django.
+Quality Assurance by predicting defects in software systems is a highly studied area in the current trend of software engineering research. Predicting defect prone files or modules are still not sufficient to save time to identify actual defects inside the code that needs to be modified to fix a bug. In this case predicting actual defect-inducing change could be a better approach to resolve this insufficiency and may reduce the effort of fixing defects. One research work had already been done which focused on the issue of predicting defect-inducing changes in change/churn level. This influenced us to replicate the work on the small scale open source project Django. We correlate actual bug fixing changes with commits to improve quality of the dataset. A zero-R model has been implied to validate our logistic regression model. The result of our replication on Django project is different than the original work and we found that the defect-inducing factors from the original work have a defect-reducing characteristic in our replication with Django.
 
 \end{abstract}
 
@@ -149,7 +149,7 @@ To avoid the overfitting of factors within the model we need to remove factors w
 
 
 
-Using this model which does nto contain the 
+Using this model which does not contain the 
 
 We present the results of the model in Tables \ref{table:confusion} and \ref{table:prediction}. The confusion matrix in table \ref{table:confusion} illustrate the performance of the model which used logistic regression and compares their results to the known values of which change introduced a defect. As illustrated we can see that our model performs better at identifying changes which cahnges are not defect-inducing. On changes which had no defects there was a recall of 95.8\% which reduce the risk of having a false positive. Of the 28.2\% (Table \ref{table:statistics}) of changes which are identified as defect-inducing in our dataset, only 14.6\% of these are recalled by the model. While there would be more instances of false negative, this would result in an increase in the number of defect-inducing changes which might go unnoticied until a defect ticket is openned by a user of the application.  
 \begin{table}[b]
@@ -238,17 +238,48 @@ The change factor's regression coefficients which are present in Table \ref{tabl
 		\hline SEXP &  & -0.0002 \\ 
 		\hline 
 	\end{tabular}
-	\label{table:regression_coefficients} 
+	\label{table:regression_coefficients}
 \end{table}
 
 
 \section{Comparison of Results}
 \label{sec:comparison-results}
 
+In comparison to the original work we would like to compare our RQ1 with RQ1 of the original paper and our RQ2 with the RQ3 of the original paper. Kamei et al. have used  both open source and commercial projects for their study but we replicated it on one single open source project. So, the comparison would be based on the results that we find in the original work for open source projects compared to our results and findings.
+
+\subsection{RQ1-RQ1 Comparison}
+\label{sec:comp-rq11}
+
+Research question 1 for both papers wanted to determine how well we can predict defect-inducing changes. The original paper provided the performance prediction metrics for it's 6 open source project and 5 commercial projects. We replicated their process and have obtained the same performance prediction metrics for Django which we can use for the comparison. Given that we did not analyse a commercial project we will disregard those metrics and will perform our comparison on the other open source projects.
+
+\begin{table}
+	\centering
+	\caption{Comparison of Prediction Performance}
+	\begin{tabular}{|p{1cm}|p{0.5cm}|p{0.5cm}|p{0.5cm}|p{0.5cm}|p{0.5cm}||c|c|}
+		\hline & \multirow{2}{*}{Acc.} & \multirow{2}{*}{Prec.} & \multirow{2}{*}{Rec.} & \multirow{2}{*}{F1} & \multirow{2}{*}{AUC} & \multicolumn{2}{|c|}{\% improvement} \\ \cline{7-8} 
+		 & &  &  &  &  & Prec. & AUC \\  
+		\hline Ours & 73.6\% & 70.0\% & 73.6\% & 67.4\% & 69.0\% & 32.6\% & 38.0\% \\ 
+		\hline Original OSS Avg. & 71\% & 37\% & 67\% & 45\% & 76\% & 92.6\% & 51.5\% \\ 
+		\hline 
+	\end{tabular}
+	
+	\label{table:compare_prediction} 
+\end{table}
+
+Table~\ref{table:prediction} represents the prediction result for Django. Our accuracy and precision are better than any of the open source projects that have been used in the original work as illustrated in the comparison table~\ref{table:compare_prediction}. Given that we do see in the other results that we are getting the better performance. Were the linear regression model's performance is compared to the baseline we notice that our results have a lower percentage improvement then that of the original paper. We believe that this would be a result of different baselines. The original paper had few details regarding the model which they used for their random defect-inducing baseline. We attempted to replicate this baseline using the ZeroR, but as the results illustrate this was probably not the one which they were using. 
+   
+
+\subsection{RQ2-RQ3 Comparison}
+\label{sec:comp-rq23}
+
+Research question 2 from our paper and research question 3 from the original paper wanted to determine what are the major characteristics of defect-inducing changes. At this point Kamei et al. found that "Entropy" is a risk reducing factor. It has the same indication in our research as well. However, "Fix" has an opposite indication in our study. Compared to the original work it is a risk increasing factor while it's a defect reducing factor for us.
+
+Surprisingly the number of sub-systems "NS" is a defect reducing factor in our study while it didn't indicate anything in the original paper. This further contradicts table~\ref{table:factors}. Given that Django is written in a different programming language and is a framework for web applications which different compared to the other open source projects that have been studied by Kamei et al.. This could explain the observed differences. Number of directories "ND" is a poor defect-inducing factor in our study, but it is the largest one which we have observed for Django. 
+
 \section{Conclusion}
 \label{sec:conclusion}
 
-TODO
+
 
 \section*{Acknowledgment}
 We would like to thank Dr. Bram Adams for providing us with the Django data and for his continued support throughout the completion of this replication paper. We would also give a special thanks to Dr. Peter Rigby who's minimum supervision has allowed us to progress with our work.
