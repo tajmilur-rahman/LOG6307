@@ -90,7 +90,6 @@ Many research have been performed comparing open source and commercial projects.
 		& SEXP & Developer experience on a subsystem & Developers that are familiar with the subsystems modified by a change are less likely to introduce defects. &  \\ 
 		\hline 
 	\end{tabular} 
-	
 	\label{table:factors}
 \end{table*}
 
@@ -101,9 +100,15 @@ Previous works are mostly just predicting defects, many of them are also focusin
 
 
 
-Similarly to Kamei's work, we use a logistic regression model to perform our prediction~\cite{Kamei2013TSE}. We are collecting the historical data of Django from it's git repository and the tables that we generate to store the historical data contains commit information. A commit representing one change here. If a commit contains multiple files then we would like to say these files have got a change at this particular commit. For the SSZ algorithm which we will use we also require the data for Django's defect tracker. Django uses the Trac ticket software system to keep track of tickets which are created for the project. We extracted these tickets and 54\% of them have a type assigned to them which identify the category of work which it covers. These types can refer to bugs/defects, new features, enhancements and cleanup/optimization ticket tasks. 
+Similarly to Kamei's work, we use a logistic regression model to perform our prediction~\cite{Kamei2013TSE}. We are collecting the historical data of Django from it's git repository and the tables that we generate to store the historical data contains commit information. A commit represents one change here. If a commit contains multiple files then we would like to say these files have got a change at this particular commit. For the SSZ algorithm which we use we also require the data for Django's defect tracker. Django uses the Trac ticket software system to keep track of tickets which are created for the project. We extracted these tickets of which 54\% of them have a type assigned to them which identify the category of work which it covers. These types can refer to bugs/defects, new features, enhancements and cleanup/optimization ticket tasks. Of these 54\% some of these tickets have their types as uncategorised  
 
-We then used an hybrid of the SZZ and ASZZ algorithms\cite{Sliwerski2005MSR} which is used to link defect fix commit to the original commit which introduced the defect.
+We then used an hybrid of the SZZ and ASZZ algorithms\cite{Sliwerski2005MSR} which is used to link defect fix commit to the original commit which introduced the defect. This is a three step process which uses the acquired data. In the first step of the SZZ algorithm we attempt to identify the commits which were used to fix a defect. This is done by searching for ticket numbers in the commit's message and for keywords such as "bug", "defect", "fix" and "patch" \cite{Kamei2013TSE}. 
+
+The second step involves the use of the defect tracking data to determine whether a commit which was identified in the first step can be linked to a tracked ticket and whether that ticket is a defect. Given that not all tickets are defects, the identifier of a ticket is not enough to say that a commit was used to fix a defect. This is why the link must be done and the ticket must be validated. However, the reason for our use of an hybrid of SZZ and ASZZ is the lack of information present in the issue tracker. We were able to link 60.0\% of the commits to tickets, but for 43.8\% of those commits it is not possible to determine what kind of ticket they are given that they have not been categorized. As a result we can only be certain of the category of 33.7\% of the commits. Due to this we have to augment our data using the ASZZ. In the event where we are unable to make a link or that the link doesn't have a type we use the keywords such as "bug", "defect", "fix" and "patch" \cite{Kamei2013TSE} to determine if the commit might have been fixing a defect. As a result we are able to determine that 34.1\% of commits were performed to fix a defect. 
+
+Following the second step we shall now have a dataset where we know whether a commit served to fix a defect. Going into the third step we now want to determine from which commits these defects originated from. This is achieved using Git's ability to know from which commit a line originates from. Where we know that a commit replaced lines which contained a defect we can compare the fix commit to the previous commit to be able to blame those replaced lines. As a result we are able to determine the origin of the lines which were replaced. This however can result in false positives as other tasks such as refactoring might have been performed as part of the commit, but we do not have a way to discriminate against those. Following the execution we were able to determine that 28.2\% of commits were defect-inducing. 
+
+From our data we also generated the change measurement factors as defined in the original paper.  
 
 
 
