@@ -71,10 +71,37 @@ Many other researchers have used change measure, for example Mockus and Weiss~\c
 
 Many research have been performed comparing open source and commercial projects. Briand et al.~\cite{Briand1999ICSE} did an analysis with the relationship between software design and quality. Zimmermann et al.\cite{Zimmermann2009ESECS} showed that there is no single factor that leads to accurate predictions. They focused on defect prediction from one project to another based on seven commercial projects and four open source projects. Existing research works create the impression that we can predict defects in a software system in many different ways having little variation in accuracy and prediction performance. But this does not help us reducing the fixing time that much. We still need to find out the particular change in the code that is involved in producing the bug.
 
+\begin{table*}[t]
+	\centering
+	\caption{Summary of Change Measures}
+	\begin{tabular}{|c|l|p{2.5cm}|p{5.5cm}|p{5.25cm}|}
+		\hline Dim. & Name & Definition & Rationale & Related Work \\ 
+		\hline \multirow{14}{*}{\begin{sideways}Diffusion\end{sideways}} & NS & Number of modified subsystems  & Changes modifying many subsystems are more likely to be defect-prone. & The defect probability of a change increases with the number of modified subsystems \cite{Mockus2000Bell}. \\ \cline{2-5}  
+		& ND & Number of modified directories & Changes touching many files are more likely to be defect-prone. & The higher the number of modified directories, the higher the chance that a change will induce a defect \cite{Mockus2000Bell}. \\ \cline{2-5}  
+		& NF & Number of modified files & Changes touching many files are more likely to be defect-prone. & The number of classes in a module is a good featureof post-release defects of a module \cite{Nagappan2006ICSE}. \\ \cline{2-5} 
+		& Entropy & Distribution of modified code across each file & Changes with high entropy are more likely to be defect-prone, because a developer will have to recall and track large numbers of scattered changes across each file. & Scattered changes are more likely to introduce defects \cite{DAmbross2010MSR}, \cite{Hassan2009ICSE}. \\ 
+		\hline \multirow{4}{*}{\begin{sideways}Size\end{sideways}} & LA & Lines of code added & The more lines of code added, the more likely a defect is introduced. & \multirow{2}{5.25cm}{Relative code churn measures are good indicators of defect modules \cite{Moser2008ICSE}, \cite{Nagappan2005ICSE}}. \\ \cline{2-4} 
+		& LD & Lines of code deleted & The more lines of code deleted, the higher the chance of a defect. &  \\ 
+		\hline \multirow{4}{*}{\begin{sideways}Purpose\end{sideways}} & FIX & Whether or not the change is defect fix & Fixing a defect means that an error was made in an earlier implementation, therefore it may indicate an area where errors are more likely. & Changes that fix defects are more likely to introduce defects than changes that implement new functionality \cite{Guo2010ICSE}, \cite{Purushothaman2005IEEE}. \\ 
+		\hline \multirow{13}{*}{\begin{sideways}History\end{sideways}} & NDEV & The number of developers that changed the modified files & The larger the NDEV, the more likely a defect is introduced, because files revised by many developers often contain different design thoughts and coding styles. & Files previously touched by more developers contain more defects \cite{Matsumoto2010PROMISE}. \\ \cline{2-5} 
+		& AGE & The avergae time interval between the last and current change & The lower the AGE (i.e., the more recent the last change), the more likely a defect will be introduced. & More recent changes contribute more defects than older changes \cite{Graves2000IEEE}. \\ \cline{2-5} 
+		& NUC & The number of unique changes to the modified files & The larger the NUC, the more likely a defect is introduced, because a developer will have to recalland track many previous changes. & The larger the spread of modified files, the higher the complexity \cite{DAmbross2010MSR}, \cite{Hassan2009ICSE}. \\ 
+		\hline \multirow{10}{*}{\begin{sideways}Experience\end{sideways}} & EXP & Developer experience & More experienced developers are less likely to introduced a defect. & Programmer experience significantly decreases the defect probability \cite{Mockus2000Bell}. \\ \cline{2-4} 
+		& REXP & Recent developer experience & A developer that has often modified the files in recent months is less likely to introduce defect, because they will be more familiar with recent developments in the system. &  \\ \cline{2-4} 
+		& SEXP & Developer experience on a subsystem & Developers that are familiar with the subsystems modified by a change are less likely to introduce defects. &  \\ 
+		\hline 
+	\end{tabular} 
+	
+	\label{table:factors}
+\end{table*}
+
 Previous works are mostly just predicting defects, many of them are also focusing on quality assurance by predicting the probability of defects or the number of defects for a particular location in the system back-end. In contrast to many of these studies Kamei et al.~\cite{Kamei2013TSE} focus on predicting the probability of a software change inducing a defect at check-in time. Actually this research of Kamei et al. made us interested and in this paper we are basically replicating this work o Kamei and his co-workers.
 
 \section{Approach}
 \label{sec:approach}
+
+
+
 Similarly to Kamei's work, we use a logistic regression model to perform our prediction~\cite{Kamei2013TSE}. We are collecting the historical data of Django from it's git repository and the tables that we generate to store the historical data contains commit information. A commit representing one change here. If a commit contains multiple files then we would like to say these files have got a change at this particular commit. For each commit the logistic regression model outputs a probability represented by a value ranging from 0 to 1. Like Kamei we also set a threshold value of 0.5 to make our prediction easier like: defect-inducing "yes" or "no"~\cite{Gyimothy2005TSE,Guo2010ICSE}.
 Kamei et al. selected a minimal set of factors to include as independent variables to avoid over-fitting the models. We followed the exactly similar approach at this point as we are also removing highly correlated factors manually but then instead of using Stepwise variable selection we are using LAR and LASSO methods~\cite{Flom2007NESUG} to remove the remaining collinear metrics and those metrics that do not contribute to the model. This technique begins by centering all the variables and it does scale the covariates. Initially, all parameters are set to 0, and then parameters are added based on correlations with current residual. 
 We used accuracy, precision, recall, and F1-measures to evaluate the performance of our model. The confusion matrix has been represented in Table~\ref{table:confusion}. A change True Positive (TP) indicates that the corresponding change is Defect inducing and False Negative (FN) indicates that the change is non-defect-inducing.
@@ -84,43 +111,12 @@ For
 Django uses the Trac ticket software system to keep track of tickets which are created for the project. We extracted Some of these tickets (54\%) have a type assigned to them which identify the category of work which it covers. These types can refer to bugs/defects, new features, enhancements and cleanup/optimization ticket tasks. 
 
 
-\begin{table}
-	\onecolumn
-	\centering
-	\caption{Summary of Change Measures}
-\begin{tabular}{|c|l|p{2.5cm}|p{5.5cm}|p{5.25cm}|}
-	\hline Dim. & Name & Definition & Rationale & Related Work \\ 
-	\hline \multirow{14}{*}{\begin{sideways}Diffusion\end{sideways}} & NS & Number of modified subsystems  & Changes modifying many subsystems are more likely to be defect-prone. & The defect probability of a change increases with the number of modified subsystems \cite{Mockus2000Bell}. \\ \cline{2-5}  
-	 & ND & Number of modified directories & Changes touching many files are more likely to be defect-prone. & The higher the number of modified directories, the higher the chance that a change will induce a defect \cite{Mockus2000Bell}. \\ \cline{2-5}  
-	 & NF & Number of modified files & Changes touching many files are more likely to be defect-prone. & The number of classes in a module is a good featureof post-release defects of a module \cite{Nagappan2006ICSE}. \\ \cline{2-5} 
-	 & Entropy & Distribution of modified code across each file & Changes with high entropy are more likely to be defect-prone, because a developer will have to recall and track large numbers of scattered changes across each file. & Scattered changes are more likely to introduce defects \cite{DAmbross2010MSR}, \cite{Hassan2009ICSE}. \\ 
-	\hline \multirow{4}{*}{\begin{sideways}Size\end{sideways}} & LA & Lines of code added & The more lines of code added, the more likely a defect is introduced. & \multirow{2}{5.25cm}{Relative code churn measures are good indicators of defect modules \cite{Moser2008ICSE}, \cite{Nagappan2005ICSE}}. \\ \cline{2-4} 
-	  & LD & Lines of code deleted & The more lines of code deleted, the higher the chance of a defect. &  \\ 
-	\hline \multirow{4}{*}{\begin{sideways}Purpose\end{sideways}} & FIX & Whether or not the change is defect fix & Fixing a defect means that an error was made in an earlier implementation, therefore it may indicate an area where errors are more likely. & Changes that fix defects are more likely to introduce defects than changes that implement new functionality \cite{Guo2010ICSE}, \cite{Purushothaman2005IEEE}. \\ 
-	\hline \multirow{13}{*}{\begin{sideways}History\end{sideways}} & NDEV & The number of developers that changed the modified files & The larger the NDEV, the more likely a defect is introduced, because files revised by many developers often contain different design thoughts and coding styles. & Files previously touched by more developers contain more defects \cite{Matsumoto2010PROMISE}. \\ \cline{2-5} 
-	& AGE & The avergae time interval between the last and current change & The lower the AGE (i.e., the more recent the last change), the more likely a defect will be introduced. & More recent changes contribute more defects than older changes \cite{Graves2000IEEE}. \\ \cline{2-5} 
-	& NUC & The number of unique changes to the modified files & The larger the NUC, the more likely a defect is introduced, because a developer will have to recalland track many previous changes. & The larger the spread of modified files, the higher the complexity \cite{DAmbross2010MSR}, \cite{Hassan2009ICSE}. \\ 
-	\hline \multirow{10}{*}{\begin{sideways}Experience\end{sideways}} & EXP & Developer experience & More experienced developers are less likely to introduced a defect. & Programmer experience significantly decreases the defect probability \cite{Mockus2000Bell}. \\ \cline{2-4} 
-	& REXP & Recent developer experience & A developer that has often modified the files in recent months is less likely to introduce defect, because they will be more familiar with recent developments in the system. &  \\ \cline{2-4} 
-	& SEXP & Developer experience on a subsystem & Developers that are familiar with the subsystems modified by a change are less likely to introduce defects. &  \\ 
-	\hline 
-\end{tabular} 
 
-\label{table:factors}
-\end{table}
-\twocolumn
 
 The following 
 
-
-
-\section{Results}
-\label{sec:results}
-
-In this section we will be presenting the results of our research questions which replicated the original paper. Django, the project which was selected for this replication is of similar size to other open source projects in the original paper. While Bugzilla is also a web application, it is programmed in a different programming language. As such Django which is a wed development framework written in python will serve to comparision to other open source projects which we being used in the original paper.
-
-\onecolumn
-\begin{table}
+%\onecolumn
+\begin{table*}[t]
 	\caption{Django Project Statictics}
 	\begin{tabular}{|p{2 cm}|p{1.5 cm}|p{1.5 cm}|p{1.5 cm}|p{1.5 cm}|p{1.5 cm}|p{1.5 cm}|p{1.5 cm}|p{1.5 cm}|}
 		\hline 
@@ -129,8 +125,15 @@ In this section we will be presenting the results of our research questions whic
 		12/07/2005 - 19/09/2014  & 26606  & 28.2\% & 142.5 & 272.3 & 4.6 & 7.9 & 143 & 5.7 \\ \hline 
 	\end{tabular}
 	\label{table:statistics}	
-\end{table}
-\twocolumn
+\end{table*}
+%\twocolumn
+
+
+\section{Results}
+\label{sec:results}
+
+In this section we will be presenting the results of our research questions which replicated the original paper. Django, the project which was selected for this replication is of similar size to other open source projects in the original paper. While Bugzilla is also a web application, it is programmed in a different programming language. As such Django which is a wed development framework written in python will serve to comparision to other open source projects which we being used in the original paper.
+
 
 \subsection{RQ1: How well can we predict defect-inducing changes?}
 \label{sec:rq1}
@@ -143,7 +146,7 @@ Using the Weka functiona
 Using this model which does nto contain the 
 
 We present the results of the model in Tables \ref{table:confusion} and \ref{table:prediction}. The confusion matrix in table \ref{table:confusion} illustrate the performance of the model which used logistic regression and compares their results to the known values of which change introduced a defect. As illustrated we can see that our model performs better at identifying changes which cahnges are not defect-inducing. On changes which had no defects there was a recall of 95.8\% which reduce the risk of having a false positive. Of the 28.2\% (Table \ref{table:statistics}) of changes which are identified as defect-inducing in our dataset, only 14.6\% of these are recalled by the model. While there would be more instances of false negative, this would result in an increase in the number of defect-inducing changes which might go unnoticied until a defect ticket is openned by a user of the application.  
-\begin{table}
+\begin{table}[b]
 	\centering
 	\caption{Django Confusion Matrix}
 	\begin{tabular}{|c|c|c|}
