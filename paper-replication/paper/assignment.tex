@@ -75,6 +75,7 @@ Django uses the Trac ticket software system to keep track of tickets which are c
 
 \begin{table}
 	\onecolumn
+	\centering
 	\caption{Summary of Change Measures}
 \begin{tabular}{|c|l|p{2.5cm}|p{5.5cm}|p{5.25cm}|}
 	\hline Dim. & Name & Definition & Rationale & Related Work \\ 
@@ -96,15 +97,17 @@ Django uses the Trac ticket software system to keep track of tickets which are c
 
 \label{table:factors}
 \end{table}
+\twocolumn
 
 The following 
 
 
-
+\onecolumn
 \section{Results}
 \label{sec:results}
 
 \begin{table}
+	\caption{Django Project Statictics}
 	\begin{tabular}{|p{2 cm}|p{1.5 cm}|p{1.5 cm}|p{1.5 cm}|p{1.5 cm}|p{1.5 cm}|p{1.5 cm}|p{1.5 cm}|p{1.5 cm}|}
 		\hline 
 		Period  & Total number of commits with changes  & Percentage of defect inducing commits  & Average LOC per file  & Avg. LOC per changes  & \# of modified files per changes  & \# of changes per day  & Max \# dev. per file  & Avg. \# of dev. per file \tabularnewline
@@ -113,6 +116,7 @@ The following
 	\end{tabular}
 	\label{table:statistics}	
 \end{table}
+\twocolumn
 
 \subsection{RQ1: How well can we predict defect-inducing changes?}
 \label{sec:rq1}
@@ -122,23 +126,26 @@ To avoid the overfitting of factors within the model we used the Using WEKA we c
 
 Using this model which does nto contain the 
 \begin{table}
-	
+	\centering
+	\caption{Django Confusion Matrix}
 	\begin{tabular}{|c|c|c|}
 		\hline 
 		true\ classified  & No defect  & defect \tabularnewline
 		\hline 
-		No defect  & 19068  & 885 \tabularnewline
+		No defect  & 19121  & 832 \tabularnewline
 		\hline 
-		defect  & 6350  & 1159 \tabularnewline
+		defect  & 6413  & 1096 \tabularnewline
 		\hline 
 	\end{tabular}
 	\label{table:confusion}
 \end{table}
 
 \begin{table}
-	\begin{tabular}{|c|c|c|c|}
-		\hline Accuracy & Precision & Recall & F1 \\ 
-		\hline  &  &  &  \\ 
+	\centering
+	\caption{Prediction Performance}
+	\begin{tabular}{|c|c|c|c|c|}
+		\hline Accuracy & Precision & Recall & F1 & AUC\\ 
+		\hline 73.6\% & 70\% & 73.6\% & 67.4\% & 69.0\% \\ 
 		\hline 
 	\end{tabular}
 	
@@ -149,9 +156,15 @@ Using this model which does nto contain the
 \subsection{RQ2: What are the major characteristics of defect-inducing changes?}
 \label{sec:rq2}
 
-Using the factors from the model we can determine which of these are prone to Given that this replication study only covers one open source project and no commercial projects compared to the original paper we will not consUsing the full dataset we can evaluate the characteristics of defect inducing changes. 
+Using the factors from the model we can determine which of these are defect-inducing. Given that this replication study only covers one open source project and no commercial projects compared to the original paper we will not cons. Using the full dataset we can evaluate the characteristics of defect inducing changes.
+
+We followed the approach presented in the original paper of using positive and negative signs to illustrate the effect which a factor as of inducing defects in a change. Factors with a positive sign (+) will result in a higher probability that a change is defect-inducing. On the other hand factors with a negative sign (-) have the opposite effect and reduce the probability that a change is defect inducing.  
+
+Using the odds ratio results obtained from the model which are presented in table \ref{table:odds_ratio} we can determine the effect which these factors have on the probability that it is defect-inducing.  We can see that most factors have a negligable effect when the Django data is modelled. The number of directories in a change (ND) is the biggest defect-inducing factor for Django. More of the factors can be said to have a negative effect in inducing defects in Django. The number of subsystem (NS), Entropy and Fix fit within this category for Django. The presence of NS and Fix in the Django data appear to contradict the results which were presented in the original paper.
 
 \begin{table}
+	\centering
+	\caption{The Impact of Change Factors on Defect-Inducing Changes}
 	\begin{tabular}{|c|c|c|c|}
 		\hline Metrics name & Impact & Django \\ 
 		\hline NS & - & 0.6779 \\ 
@@ -172,8 +185,11 @@ Using the factors from the model we can determine which of these are prone to Gi
 	\label{table:odds_ratio}  
 \end{table}
 
+Table \ref{table:regression_coefficients}
 
 \begin{table}
+	\centering
+	\caption{The Regression Coefficients of Change Factors}
 	\begin{tabular}{|c|c|c|c|}
 		\hline Metrics name & Impact & Django \\ 
 		\hline NS & - & -0.3887 \\ 
